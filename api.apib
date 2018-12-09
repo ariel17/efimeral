@@ -2,17 +2,362 @@ FORMAT: 1A
 
 # Efimeral
 
-Efimeral is a ephemeral Linux boxes provider. This is the public API
+Efimeral is an user-and-drop Linux boxes provider. This is the public API
 definition.
 
-# Group Distributions
+# Group Distributions
 
-## Distribution Collection [/distributions]
+This group refers to the available Linux distributions to be displayed as
+user's boxes images.
+
+## Distributions [/distributions]
 
 ### List available distributions [GET]
 
+Shows the list of available Linux distributions.
+
++ Request List available Linux distributions
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              {
+                "name": "ubuntu",
+                "arch": "x86_64",
+                "versions": [
+                  {
+                    "id": "ubuntu-x86_64-17.04",
+                    "tag": "17.04",
+                    "kernel": "4.10"
+                  },
+                  {
+                    "id": "ubuntu-x86_64-17.10",
+                    "tag": "17.10",
+                    "kernel": "4.13"
+                  }, 
+                  {
+                    "id": "ubuntu-x86_64-18.04",
+                    "tag": "18.04",
+                    "kernel": "4.15"
+                  }
+                ]
+              },
+              {
+                "name": "ubuntu",
+                "arch": "x86",
+                "versions": [
+                  {
+                    "id": "ubuntu-x86-17.04",
+                    "tag": "17.04",
+                    "kernel": "4.10"
+                  },
+                  {
+                    "id": "ubuntu-x86-17.10",
+                    "tag": "17.10",
+                    "kernel": "4.13"
+                  }, 
+                  {
+                    "id": "ubuntu-x86-18.04",
+                    "tag": "18.04",
+                    "kernel": "4.15"
+                  }
+                ]
+              },
+              {
+                "name": "archlinux",
+                "arch": "x86_64",
+                "versions": [
+                  {
+                    "id": "archlinux-x86_64-2018.10.01"
+                    "tag": "2018.10.01",
+                    "kernel": "4.18.9"
+                  }
+                  {
+                    "id": "archlinux-x86_64-2018.11.01"
+                    "tag": "2018.11.01",
+                    "kernel": "4.18.16"
+                  },
+                  {
+                    "id": "archlinux-x86_64-2018.12.01"
+                    "tag": "2018.12.01",
+                    "kernel": "4.19.4"
+                  }
+                ]
+              }
+            ]
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
 # Group Sessions
 
-## Session Collection [/sessions]
+This group is about resources to manipulate user's sessions. 
+
+## Sessions [/sessions]
+
+### Show existent sessions [GET]
+
+Shows current existing session IDs on the system.
+
++ Request Show session IDs
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+              "63bbfea82b8880ed33cdb762aa11fab722a90a24",
+              "5801069e6b5a4d3ec171ab1ff041bfed1b356585",
+              "2659b44a3b3307dd0aba88650217ee1db3cb082e",
+              "38b5d43326f79dfd93727995f3396bbfd7b9e976",
+              "b2688041001205939a2381286ad6b3cc658694de"
+            ]
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
 
 ### Create a new session [POST]
+
+Creates a new session for the current web user. A new box will be created using
+the granted distribution ID. 
+
++ Request New ephemeral Linux box
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
+    + Body
+
+            {
+              "id": "ubuntu-x86_64-17.04"
+            }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: http://example.com/sessions/63bbfea82b8880ed33cdb762aa11fab722a90a24
+
+    + Body
+
+            {
+              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24"
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
++ Response 500 (application/json)
+The service had an unexpected error creating a new box.
+
+    + Body
+
+            {
+              "status": 500,
+              "error": "Internal Server Error",
+              "description": "X method had the error Y."
+            }
+
++ Response 503 (application/json)
+The service cannot create a new box due to lack of resources, maybe caused by
+service stress. The `Retry-After` header indicates that client should retry
+after 600 seconds from the initial request.
+
+    + Headers
+
+            Retry-After: 600
+
+    + Body
+
+            {
+              "status": 503,
+              "error": "Service Unavailable"
+            }
+
+## Session [/sessions/{id}]
+
++ Parameters
+    + id: 63bbfea82b8880ed33cdb762aa11fab722a90a24 (required, string) - ID of the Session to fetch metadata.
+
+### Get session metadata [GET]
+
+Returns a session metadata, if it exists.
+
++ Request Get session metadata
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
+    + Body
+
+            {
+              "distribution_id": "ubuntu-x86_64-17.04",
+              "created_at": "2018-12-08T12:00:00-03:00",
+              "instance_name": "63bbfea82b8880ed33cdb762aa11fab722a90a24-ubuntu-x86_64-17.04",
+              "container_id": "52249ba75f0f",
+              "running": true
+            }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: http://example.com/sessions/63bbfea82b8880ed33cdb762aa11fab722a90a24
+
+    + Body
+
+            {
+              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24"
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+              "status": 404,
+              "error": "Not found",
+              "description": "The session ID was not found."
+            }
+
+### Delete existing session [DELETE]
+
+Deletes indicated session ID from the system, if it exists.
+
++ Request Delete session
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "distribution_id": "ubuntu-x86_64-17.04",
+              "created_at": "2018-12-08T12:00:00-03:00",
+              "deleted_at": "2018-12-08T12:00:00-03:00",
+              "instance_name": "63bbfea82b8880ed33cdb762aa11fab722a90a24-ubuntu-x86_64-17.04",
+              "container_id": "52249ba75f0f",
+              "running": false
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
++ Response 404 (application/json)
+
+    + Body
+
+            {
+              "status": 404,
+              "error": "Not found",
+              "description": "The session ID was not found."
+            }

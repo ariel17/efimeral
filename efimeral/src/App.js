@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import styled, { keyframes } from 'styled-components';
+import './fonts/stylesheet.css';
+
 
 const Wrapper = styled.div`
     text-align: center;
@@ -31,6 +33,10 @@ const Logo = styled.img`
     height: 40vmin;
 `
 
+const Efimeral = styled.p`
+    font-family: "cubic-millimeter";
+`
+
 
 class App extends Component {
   render() {
@@ -38,6 +44,7 @@ class App extends Component {
       <Wrapper>
         <Header>
           <Logo src={logo} alt="logo" />
+          <Efimeral>Efimeral</Efimeral>
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>

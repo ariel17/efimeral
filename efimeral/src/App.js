@@ -1,13 +1,43 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import styled, { keyframes } from 'styled-components';
+
+const Wrapper = styled.div`
+    text-align: center;
+`
+
+const Header = styled.header`
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+`
+
+const animation = keyframes`
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+`
+
+const Logo = styled.img`
+    animation: ${animation} infinite 20s linear;
+    height: 40vmin;
+`
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <Wrapper>
+        <Header>
+          <Logo src={logo} alt="logo" />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
@@ -19,8 +49,8 @@ class App extends Component {
           >
             Learn React
           </a>
-        </header>
-      </div>
+        </Header>
+      </Wrapper>
     );
   }
 }

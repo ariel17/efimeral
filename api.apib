@@ -10,7 +10,7 @@ definition.
 This group refers to the available Linux distributions to be displayed as
 user's boxes images.
 
-## Distributions [/distributions]
+## Distributions [/distributions{?page,limit}]
 
 ### List available distributions [GET]
 
@@ -24,46 +24,22 @@ distributions.
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
 
+    + Parameters
+      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
 + Response 200 (application/json)
 
     + Body
 
-            [
-              {
-                "name": "ubuntu",
-                "versions": [
-                  {
-                    "tag": "17.04",
-                    "kernel": "4.10"
-                  },
-                  {
-                    "tag": "17.10",
-                    "kernel": "4.13"
-                  }, 
-                  {
-                    "tag": "18.04",
-                    "kernel": "4.15"
-                  }
-                ]
-              },
-              {
-                "name": "archlinux",
-                "versions": [
-                  {
-                    "tag": "2018.10.01",
-                    "kernel": "4.18.9"
-                  }
-                  {
-                    "tag": "2018.11.01",
-                    "kernel": "4.18.16"
-                  },
-                  {
-                    "tag": "2018.12.01",
-                    "kernel": "4.19.4"
-                  }
-                ]
-              }
-            ]
+            {
+              "total": 10,
+              "page": 1,
+              "distributions": [
+                "ubuntu",
+                "archlinux",
+              ]
+            }
 
 + Response 401 (application/json)
 
@@ -86,11 +62,125 @@ distributions.
               "description": "You don't have required permissions to access this resource."
             }
 
+## Distribution [/distributions/{name}{?page,limit}]
+
+### List available versions per distribution [GET]
+
+TODO
+
++ Request List available Linux distributions
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
+    + Parameters
+      + name: ubuntu (string, required) - The distribution name to show.
+      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "total": 10,
+              "page": 1,
+              "versions": [
+                {
+                  "tag": "x64-17.04",
+                  "kernel": "4.10",
+                  "arch": "x64"
+                },
+                {
+                  "tag": "x64-17.10",
+                  "kernel": "4.13",
+                  "arch": "x64"
+                }, 
+                {
+                  "tag": "x32-12.04",
+                  "kernel": "3.22",
+                  "arch": "x32"
+                }
+              ]
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
+## Version [/distributions/{name}/{version}]
+
+### Show data about an specific version [GET]
+
+TODO
+
++ Request List available Linux distributions
+
+    + Headers
+
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
+            Accept: application/json
+
+    + Parameters
+      + name: ubuntu (string, required) - The distribution name for the version.
+      + version: `x64-17.04` (string, required) - The specific version for the indicated distribution to shot.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "tag": "x64-17.04",
+              "kernel": "4.10",
+              "arch": "x64"
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+              "status": 401,
+              "error": "Unauthorized",
+              "description": "Missing required credentials."
+            }
+
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+              "status": 403,
+              "error": "Forbidden",
+              "description": "You don't have required permissions to access this resource."
+            }
+
+
 # Group Sessions
 
 This group is about resources to manipulate user's sessions. 
 
-## Sessions [/sessions]
+## Sessions [/sessions{?page,limit}]
 
 ### Show existent sessions [GET]
 
@@ -103,17 +193,25 @@ Shows current existing session IDs on the system.
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
 
+    + Parameters
+      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
 + Response 200 (application/json)
 
     + Body
 
-            [
-              "63bbfea82b8880ed33cdb762aa11fab722a90a24",
-              "5801069e6b5a4d3ec171ab1ff041bfed1b356585",
-              "2659b44a3b3307dd0aba88650217ee1db3cb082e",
-              "38b5d43326f79dfd93727995f3396bbfd7b9e976",
-              "b2688041001205939a2381286ad6b3cc658694de"
-            ]
+            {
+              "total": 10,
+              "page": 1,
+              "sessions": [
+                "63bbfea82b8880ed33cdb762aa11fab722a90a24",
+                "5801069e6b5a4d3ec171ab1ff041bfed1b356585",
+                "2659b44a3b3307dd0aba88650217ee1db3cb082e",
+                "38b5d43326f79dfd93727995f3396bbfd7b9e976",
+                "b2688041001205939a2381286ad6b3cc658694de"
+              ]
+            }
 
 + Response 401 (application/json)
 
@@ -237,10 +335,9 @@ Returns a session metadata, if it exists.
     + Body
 
             {
+              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24",
               "distribution": "ubuntu/17.04",
               "created_at": "2018-12-08T12:00:00-03:00",
-              "instance_name": "63bbfea82b8880ed33cdb762aa11fab722a90a24-ubuntu-x86_64-17.04",
-              "container_id": "52249ba75f0f",
               "running": true
             }
 
@@ -290,11 +387,10 @@ Deletes indicated session ID from the system, if it exists.
     + Body
 
             {
+              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24",
               "distribution": "ubuntu/17.04",
               "created_at": "2018-12-08T12:00:00-03:00",
               "deleted_at": "2018-12-08T12:00:00-03:00",
-              "instance_name": "63bbfea82b8880ed33cdb762aa11fab722a90a24-ubuntu-x86_64-17.04",
-              "container_id": "52249ba75f0f",
               "running": false
             }
 

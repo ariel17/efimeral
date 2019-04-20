@@ -17,16 +17,16 @@ user's boxes images.
 Shows the list of available Linux distributions. Architecture is x86_64 for all
 distributions.
 
++ Parameters
+  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
 + Request List available Linux distributions
 
     + Headers
 
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
-
-    + Parameters
-      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
 
 + Response 200 (application/json)
 
@@ -68,17 +68,17 @@ distributions.
 
 TODO
 
-+ Request List available Linux distributions
++ Parameters
+  + name: ubuntu (string, required) - The distribution name to show.
+  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
++ Request List available versions per distribution
 
     + Headers
 
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
-
-    + Parameters
-      + name: ubuntu (string, required) - The distribution name to show.
-      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
 
 + Response 200 (application/json)
 
@@ -133,16 +133,16 @@ TODO
 
 TODO
 
-+ Request List available Linux distributions
++ Parameters
+  + name: ubuntu (string, required) - The distribution name for the version.
+  + version: `x64-17.04` (string, required) - The specific version for the indicated distribution to shot.
+
++ Request Show data about specific version
 
     + Headers
 
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
-
-    + Parameters
-      + name: ubuntu (string, required) - The distribution name for the version.
-      + version: `x64-17.04` (string, required) - The specific version for the indicated distribution to shot.
 
 + Response 200 (application/json)
 

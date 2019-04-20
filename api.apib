@@ -2,13 +2,54 @@ FORMAT: 1A
 
 # Efimeral
 
-Efimeral is an use-and-drop Linux boxes provider. This is the public API
-definition.
+Efimeral is an use-and-drop Linux boxes provider. This is the public API definition.
+
+# Data Structures
+
+## Error (object)
++ status (number, required) - The HTTP status value.
++ error (string, required) - The error category name.
++ description (string, required) - Short description of the current error.
+
+## Page (object)
++ total: 10 (number, required) - Total amount of items in the resource.
++ page: 1 (number, required) - Actual page showing content.
+
+## DistributionsPage (Page)
++ distributions (array, required) - The list of distributions.
+
+## DistributionVersion (object)
++ tag: `x64-17.04` (string, required) - The tag name for the Docker image.
++ kernel: 4.10 (string, required) - The kernel version that comes with the version.
++ arch: x64 (string, required) - The microprocessor architecture implemented.
+
+## DistributionVersionsPage (Page)
++ versions: array[DistributionVersion] - The list of versions available for current distribution.
+
+## SessionsPage (Page)
++ sessions: array[string] (string, required) - The ID list of existing sessions.
+
+## NewSessionRequest (object)
++ distribution: ubuntu (string, required) - The distribution name to use.
++ tag: `x64-17.04` (string, required) - The distribution's tag to use.
+
+## NewSessionResponse (object)
++ id: 63bbfea82b8880ed33cdb762aa11fab722a90a24 (string, required) - The ID of the new session recently created.
+
+## ActiveSession (object)
++ id: 63bbfea82b8880ed33cdb762aa11fab722a90a24 (string, required) - The ID of the current session.
++ distribution: ubuntu (string, required) - The distribution name used.
++ tag: `x64-17.04` (string, required) - The distribution's tag used.
++ created_at: `2018-12-08T12:00:00-03:00` (string, required) - The creation date of the session.
++ running: true (boolean, required) - If the containers is currently active.
+
+## DeletedSession (ActiveSession)
++ running: false (boolean, required) - If the containers is currently active.
++ deleted_at: `2018-12-08T12:00:00-03:00` (string, required) - The elimination date of the session.
 
 # Group Distributions
 
-This group refers to the available Linux distributions to be displayed as
-user's boxes images.
+This group refers to the available Linux distributions to be displayed as user's boxes images.
 
 ## Distributions [/distributions{?page,limit}]
 
@@ -29,44 +70,11 @@ distributions.
             Accept: application/json
 
 + Response 200 (application/json)
-
-    + Body
-
-            {
-              "total": 10,
-              "page": 1,
-              "distributions": [
-                "ubuntu",
-                "archlinux",
-              ]
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
+    + Attributes (DistributionsPage)
 
 ## Distribution [/distributions/{name}{?page,limit}]
 
 ### List available versions per distribution [GET]
-
-TODO
 
 + Parameters
   + name: ubuntu (string, required) - The distribution name to show.
@@ -81,57 +89,11 @@ TODO
             Accept: application/json
 
 + Response 200 (application/json)
-
-    + Body
-
-            {
-              "total": 10,
-              "page": 1,
-              "versions": [
-                {
-                  "tag": "x64-17.04",
-                  "kernel": "4.10",
-                  "arch": "x64"
-                },
-                {
-                  "tag": "x64-17.10",
-                  "kernel": "4.13",
-                  "arch": "x64"
-                }, 
-                {
-                  "tag": "x32-12.04",
-                  "kernel": "3.22",
-                  "arch": "x32"
-                }
-              ]
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
+    + Attributes (DistributionVersionsPage)
 
 ## Version [/distributions/{name}/{version}]
 
 ### Show data about an specific version [GET]
-
-TODO
 
 + Parameters
   + name: ubuntu (string, required) - The distribution name for the version.
@@ -145,36 +107,7 @@ TODO
             Accept: application/json
 
 + Response 200 (application/json)
-
-    + Body
-
-            {
-              "tag": "x64-17.04",
-              "kernel": "4.10",
-              "arch": "x64"
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
-
+    + Attributes (DistributionVersion)
 
 # Group Sessions
 
@@ -186,6 +119,10 @@ This group is about resources to manipulate user's sessions.
 
 Shows current existing session IDs on the system.
 
++ Parameters
+  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
+  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
+
 + Request Show session IDs
 
     + Headers
@@ -193,50 +130,12 @@ Shows current existing session IDs on the system.
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
 
-    + Parameters
-      + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-      + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
-
 + Response 200 (application/json)
-
-    + Body
-
-            {
-              "total": 10,
-              "page": 1,
-              "sessions": [
-                "63bbfea82b8880ed33cdb762aa11fab722a90a24",
-                "5801069e6b5a4d3ec171ab1ff041bfed1b356585",
-                "2659b44a3b3307dd0aba88650217ee1db3cb082e",
-                "38b5d43326f79dfd93727995f3396bbfd7b9e976",
-                "b2688041001205939a2381286ad6b3cc658694de"
-              ]
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
+    + Attributes (SessionsPage)
 
 ### Create a new session [POST]
 
-Creates a new session for the current web user. A new box will be created using
-the granted distribution ID. 
+Creates a new session for the current web user. A new box will be created using the granted distribution ID. 
 
 + Request New ephemeral Linux box
 
@@ -245,11 +144,7 @@ the granted distribution ID.
             Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
             Accept: application/json
 
-    + Body
-
-            {
-              "distribution": "ubuntu/17.04"
-            }
+    + Attributes (NewSessionRequest)
 
 + Response 201 (application/json)
 
@@ -257,58 +152,7 @@ the granted distribution ID.
 
             Location: http://example.com/sessions/63bbfea82b8880ed33cdb762aa11fab722a90a24
 
-    + Body
-
-            {
-              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24"
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
-
-+ Response 500 (application/json)
-The service had an unexpected error creating a new box.
-
-    + Body
-
-            {
-              "status": 500,
-              "error": "Internal Server Error",
-              "description": "X method had the error Y."
-            }
-
-+ Response 503 (application/json)
-The service cannot create a new box due to lack of resources, maybe caused by
-service stress. The `Retry-After` header indicates that client should retry
-after 600 seconds from the initial request.
-
-    + Headers
-
-            Retry-After: 600
-
-    + Body
-
-            {
-              "status": 503,
-              "error": "Service Unavailable"
-            }
+    + Attributes (NewSessionResponse)
 
 ## Session [/sessions/{id}]
 
@@ -327,49 +171,7 @@ Returns a session metadata, if it exists.
             Accept: application/json
 
 + Response 200 (application/json)
-
-    + Headers
-
-            Location: http://example.com/sessions/63bbfea82b8880ed33cdb762aa11fab722a90a24
-
-    + Body
-
-            {
-              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24",
-              "distribution": "ubuntu/17.04",
-              "created_at": "2018-12-08T12:00:00-03:00",
-              "running": true
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
-
-+ Response 404 (application/json)
-
-    + Body
-
-            {
-              "status": 404,
-              "error": "Not found",
-              "description": "The session ID was not found."
-            }
+    + Attributes (ActiveSession)
 
 ### Delete existing session [DELETE]
 
@@ -383,54 +185,4 @@ Deletes indicated session ID from the system, if it exists.
             Accept: application/json
 
 + Response 200 (application/json)
-
-    + Body
-
-            {
-              "id": "63bbfea82b8880ed33cdb762aa11fab722a90a24",
-              "distribution": "ubuntu/17.04",
-              "created_at": "2018-12-08T12:00:00-03:00",
-              "deleted_at": "2018-12-08T12:00:00-03:00",
-              "running": false
-            }
-
-+ Response 401 (application/json)
-
-    + Body
-
-            {
-              "status": 401,
-              "error": "Unauthorized",
-              "description": "Missing required credentials."
-            }
-
-+ Response 403 (application/json)
-
-    + Body
-
-            {
-              "status": 403,
-              "error": "Forbidden",
-              "description": "You don't have required permissions to access this resource."
-            }
-
-+ Response 404 (application/json)
-
-    + Body
-
-            {
-              "status": 404,
-              "error": "Not found",
-              "description": "The session ID was not found."
-            }
-
-+ Response 500 (application/json)
-The service had an unexpected error deleting the box.
-
-    + Body
-
-            {
-              "status": 500,
-              "error": "Internal Server Error",
-              "description": "X method had the error Y."
-            }
+    + Attributes (DeletedSession)

@@ -2,7 +2,7 @@
   "name": "efimeral",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ariel17.github.io/efimeral",
+  "homepage": "http://ariel17.com.ar/efimeral",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",

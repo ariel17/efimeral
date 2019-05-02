@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e01be99a973b79abbb8fdfcebd445393",
+    "revision": "58ba0450edc6815b349c03026324d731",
     "url": "/efimeral/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/efimeral/static/css/2.22a7d4ef.chunk.css"
   },
   {
-    "revision": "cc04829823b948ffe6a4",
+    "revision": "1899929ba0f7417ea1f9",
     "url": "/efimeral/static/css/main.908fc77f.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/efimeral/static/js/2.85fed035.chunk.js"
   },
   {
-    "revision": "cc04829823b948ffe6a4",
-    "url": "/efimeral/static/js/main.92584edf.chunk.js"
+    "revision": "1899929ba0f7417ea1f9",
+    "url": "/efimeral/static/js/main.91c952f1.chunk.js"
   },
   {
     "revision": "088899ba6a6e34a46155",

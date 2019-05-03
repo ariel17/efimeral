@@ -11,14 +11,29 @@ const C = styled(Container)`
 `
 
 const P = styled.p`
-    font-size: 1.5em;
+    font-size: 1em;
     color: white;
     text-align: center;
-    margin: 30px;
+    margin: 0;
+
+    @media (min-width: 500px) {
+        font-size: 1.5em;
+        margin: 30px;
+    }
 `
 
-const Distributions = styled.section`
-    margin: 80px;
+const Title = styled(Row)`
+    margin-top: 60px;
+`
+
+const Distributions = styled(Row)`
+    margin-top: 30px;
+    @media (max-width: 500px) {
+        margin-top: 0;
+        & > div {
+            margin-top: 40px;
+        }
+    }
 `
 
 
@@ -54,20 +69,20 @@ class Home extends Component {
                     </Row>
                 </section>
 
-                <Distributions>
-                    <Row>
+                <section>
+                    <Title>
                         <Col md="12" sm="12">
                             <P>Choose a distribution</P>
                         </Col>
-                    </Row>
-                    <Row>
+                    </Title>
+                    <Distributions>
                         <Col md="6" sm="12">
                             <a href="/ubuntu" onClick={this.showModal}><Ubuntu /></a>
                         </Col>
                         <Col md="6" sm="12">
                             <a href="/arch" onClick={this.showModal}><Arch /></a>
                         </Col>
-                    </Row>
+                    </Distributions>
                     <Modal show={this.state.show} onHide={this.closeModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Efimeral is WIP</Modal.Title>
@@ -77,7 +92,7 @@ class Home extends Component {
                             <Button variant="primary" onClick={this.closeModal}>Close</Button>
                         </Modal.Footer>
                     </Modal>
-                </Distributions>
+                </section>
             </C>
         );
     }

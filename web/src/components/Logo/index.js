@@ -12,7 +12,6 @@ const PLogo = styled.p`
     color: white;
     line-height: 1em;
     margin: 0;
-    margin-top: -0.45em;
     text-align: center;
 
     @media (min-width: 500px) {
@@ -21,23 +20,28 @@ const PLogo = styled.p`
 `
 
 const PSymbol = styled.p`
-    font-size: 15em;
+    font-size: 12em;
     font-family: "cubic-millimeter";
     color: white;
-    line-height: 1em;
-    margin-top: -0.35em;
+    line-height: 0.9;
+    margin: 0;
     text-align: center;
 
     @media (min-width: 500px) {
-      font-size: 25em;
+        font-size: 20em;
+        line-height: 0.7;
     }
 `
 
 const Linux = styled(Image)`
-    width: 40%;
+    width: 75%;
     height: auto;
     margin: auto;    
     display: block;
+
+    @media (min-width: 500px) {
+        width: 40%;
+    }
 `
 
 class Logo extends Component {

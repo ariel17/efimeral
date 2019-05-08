@@ -58,7 +58,7 @@ class Home extends Component {
     render = () => {
         return (
             <C fluid="true">
-                <Header />
+                <Header activeKey="/" />
 
                 <section>    
                     <Row>

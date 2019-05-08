@@ -8,18 +8,18 @@ class App extends Component {
 
     render = () => {
         return (
-          <BrowserRouter>
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Switch>
               <Route exact path='/' render={
                 (props) => <Home />
               } />
-              <Route exact path='/about' render={
+              <Route path='/about' render={
                 (props) => <About />
               } />
-              <Route exact path='/ubuntu' render={
+              <Route path='/ubuntu' render={
                 (props) => <Instance distro="ubuntu" />
               } />
-              <Route exact path='/arch' render={
+              <Route path='/arch' render={
                 (props) => <Instance distro="arch" />
               } />
             </Switch>

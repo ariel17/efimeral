@@ -39,7 +39,7 @@ class About extends Component {
     render = () => {
         return (
             <C fluid="true">
-                <Header activeKey="/about" />
+                <Header activeKey={process.env.PUBLIC_URL + '/about'} />
 
                 <section>    
                     <Row>

@@ -58,7 +58,7 @@ class Home extends Component {
     render = () => {
         return (
             <C fluid="true">
-                <Header activeKey="/" />
+                <Header activeKey={process.env.PUBLIC_URL + '/'} />
 
                 <section>    
                     <Row>

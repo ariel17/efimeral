@@ -10,7 +10,7 @@ const P = styled.p`
     font-size: 1em;
     color: white;
     text-align: left;
-    margin: 0;
+    margin: 50px 0 0 0;
 
     @media (min-width: 500px) {
         margin: 30px;

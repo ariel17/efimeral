@@ -23,12 +23,12 @@ class Header extends Component {
     render = () => {
         return (
           <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <NavbarBrand href={process.env.PUBLIC_URL + '/'}>efimeral</NavbarBrand>
+            <NavbarBrand href={process.env.PUBLIC_URL + '/#/'}>efimeral</NavbarBrand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto"></Nav>
               <Nav defaultActiveKey={this.state.activeKey}>
-                <Nav.Link href={process.env.PUBLIC_URL + '/'}>Home</Nav.Link>
+                <Nav.Link href={process.env.PUBLIC_URL + '/#/'}>Home</Nav.Link>
                 <Nav.Link href={process.env.PUBLIC_URL + '/#/about'}>About</Nav.Link>
               </Nav>
             </Navbar.Collapse>

@@ -37,3 +37,6 @@ Session.vim
 
 #####=== Go ===#####
 *.out
+
+#####=== IDEA IDE ===#####
+.idea

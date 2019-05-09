@@ -7,27 +7,21 @@ Efimeral is an use-and-drop Linux boxes provider. This is the public API definit
 # Data Structures
 
 ## Error (object)
-+ status (number, required) - The HTTP status value.
-+ error (string, required) - The error category name.
-+ description (string, required) - Short description of the current error.
++ error: category (string, required) - The error category name.
++ description: short description text (string, required) - Short description of the current error.
+
+## BadRequestError (Error)
++ status: 400 (number, required) - The HTTP status value.
+
+## NotFoundError (Error)
++ status: 404 (number, required) - The HTTP status value.
 
 ## Page (object)
 + total: 10 (number, required) - Total amount of items in the resource.
 + page: 1 (number, required) - Actual page showing content.
 
-## DistributionsPage (Page)
-+ distributions (array, required) - The list of distributions.
-
-## DistributionVersion (object)
-+ tag: `x64-17.04` (string, required) - The tag name for the Docker image.
-+ kernel: 4.10 (string, required) - The kernel version that comes with the version.
-+ arch: x64 (string, required) - The microprocessor architecture implemented.
-
-## DistributionVersionsPage (Page)
-+ versions: array[DistributionVersion] - The list of versions available for current distribution.
-
 ## SessionsPage (Page)
-+ sessions: array[string] (string, required) - The ID list of existing sessions.
++ sessions (array[ActiveSession], required) - The list of existing sessions, paginated.
 
 ## NewSessionRequest (object)
 + distribution: ubuntu (string, required) - The distribution name to use.
@@ -46,68 +40,6 @@ Efimeral is an use-and-drop Linux boxes provider. This is the public API definit
 ## DeletedSession (ActiveSession)
 + running: false (boolean, required) - If the containers is currently active.
 + deleted_at: `2018-12-08T12:00:00-03:00` (string, required) - The elimination date of the session.
-
-# Group Distributions
-
-This group refers to the available Linux distributions to be displayed as user's boxes images.
-
-## Distributions [/distributions{?page,limit}]
-
-### List available distributions [GET]
-
-Shows the list of available Linux distributions. Architecture is x86_64 for all
-distributions.
-
-+ Parameters
-  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
-
-+ Request List available Linux distributions
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
-            Accept: application/json
-
-+ Response 200 (application/json)
-    + Attributes (DistributionsPage)
-
-## Distribution [/distributions/{name}{?page,limit}]
-
-### List available versions per distribution [GET]
-
-+ Parameters
-  + name: ubuntu (string, required) - The distribution name to show.
-  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
-
-+ Request List available versions per distribution
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
-            Accept: application/json
-
-+ Response 200 (application/json)
-    + Attributes (DistributionVersionsPage)
-
-## Version [/distributions/{name}/{version}]
-
-### Show data about an specific version [GET]
-
-+ Parameters
-  + name: ubuntu (string, required) - The distribution name for the version.
-  + version: `x64-17.04` (string, required) - The specific version for the indicated distribution to shot.
-
-+ Request Show data about specific version
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
-            Accept: application/json
-
-+ Response 200 (application/json)
-    + Attributes (DistributionVersion)
 
 # Group Sessions
 
@@ -154,6 +86,10 @@ Creates a new session for the current web user. A new box will be created using 
 
     + Attributes (NewSessionResponse)
 
++ Response 400 (application/json)
+
+    + Attributes (BadRequestError)
+
 ## Session [/sessions/{id}]
 
 + Parameters
@@ -173,6 +109,9 @@ Returns a session metadata, if it exists.
 + Response 200 (application/json)
     + Attributes (ActiveSession)
 
++ Response 404 (application/json)
+    + Attributes (NotFoundError)
+
 ### Delete existing session [DELETE]
 
 Deletes indicated session ID from the system, if it exists.
@@ -186,3 +125,6 @@ Deletes indicated session ID from the system, if it exists.
 
 + Response 200 (application/json)
     + Attributes (DeletedSession)
+
++ Response 404 (application/json)
+    + Attributes (NotFoundError)

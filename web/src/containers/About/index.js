@@ -10,11 +10,15 @@ const P = styled.p`
     font-size: 1em;
     color: white;
     text-align: left;
-    margin: 50px 0 0 0;
+    margin: 20px;
 
     @media (min-width: 500px) {
-        margin: 30px;
+        margin: 50px;
     }
+`
+
+const StyledSection = styled.section`
+    margin: 20px 20px 0 20px;
 `
 
 
@@ -49,7 +53,7 @@ class About extends Component {
                     </Row>
                 </section>
 
-                <section>
+                <StyledSection>
                     <Row>
                         <Col md="12" sm="12">
                             <P>
@@ -71,7 +75,7 @@ class About extends Component {
                             </P>
                         </Col>
                     </Row>
-                </section>
+                </StyledSection>
             </C>
         );
     }

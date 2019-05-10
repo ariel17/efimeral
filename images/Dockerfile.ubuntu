@@ -1,0 +1,13 @@
+FROM ubuntu:19.04
+LABEL maintainer="ariel.gerardo.rios@gmail.com"
+
+RUN ["apt", "update"]
+RUN ["apt", "install", "-y", "vim", "htop", "curl", "telnet"]
+RUN ["apt", "install", "-y", "shellinabox", "openssl", "ca-certificates"]
+
+ARG USER=efimeral
+ARG PASSWD=efimeral
+RUN useradd -m -p $(openssl passwd -1 ${PASSWD}) ${USER}
+
+EXPOSE 4200
+CMD ["shellinaboxd", "--disable-ssl"]

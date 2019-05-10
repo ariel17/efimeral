@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,19 +13,21 @@ import (
 func CreateSession(c *gin.Context) {
 	body, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		apiErr := apierrors.NewBadRequestError(err)
+		c.JSON(apiErr.Status, apiErr)
 		return
 	}
 
-	var sr SessionRequest
+	var sr SessionDistribution
 	if err := json.Unmarshal(body, &sr); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		apiErr := apierrors.NewBadRequestError(err)
+		c.JSON(apiErr.Status, apiErr)
 		return
 	}
 
-	s, err := NewSession(&sr)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+	s, apiErr := NewSession(&sr)
+	if apiErr != nil {
+		c.JSON(apiErr.Status, apiErr)
 		return
 	}
 
@@ -36,12 +39,8 @@ func GetSession(c *gin.Context) {
 	id := c.Param("id")
 	s, err := FetchSession(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(err.Status, err)
 		return
-	}
-
-	if s == nil {
-		c.JSON(http.StatusNotFound, nil)
 	}
 
 	c.JSON(http.StatusOK, s)
@@ -52,12 +51,8 @@ func DeleteSession(c *gin.Context) {
 	id := c.Param("id")
 	s, err := RemoveSession(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(err.Status, err)
 		return
-	}
-
-	if s == nil {
-		c.JSON(http.StatusNotFound, nil)
 	}
 
 	c.JSON(http.StatusOK, s)

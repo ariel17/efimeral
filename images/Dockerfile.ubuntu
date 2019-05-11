@@ -10,4 +10,4 @@ ARG PASSWD=efimeral
 RUN useradd -m -p $(openssl passwd -1 ${PASSWD}) ${USER}
 
 EXPOSE 4200
-CMD ["shellinaboxd", "--disable-ssl"]
+CMD ["shellinaboxd", "--disable-ssl", "--disable-ssl-menu", "--css=/etc/shellinabox/options-available/00_White On Black.css"]

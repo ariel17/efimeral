@@ -17,7 +17,11 @@ func (dc *dockerMock) Create(distribution Distribution, tag string) (*Container,
 	return nil, nil
 }
 
-func (dc *dockerMock) Destroy(container *Container) *apierrors.APIError {
+func (dc *dockerMock) Get(id string) (*Container, *apierrors.APIError) {
+	return nil, nil
+}
+
+func (dc *dockerMock) Destroy(id string) *apierrors.APIError {
 	return nil
 }
 

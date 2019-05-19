@@ -2,6 +2,8 @@ package sessions
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/ariel17/efimeral/api/config"
@@ -10,15 +12,17 @@ import (
 )
 
 type Container struct {
-	ID           string
-	Distribution Distribution
-	Tag          string
+	ID           string       `json:"id"`
+	Distribution Distribution `json:"distribution"`
+	Tag          string       `json:"tag"`
+	CreatedAt    time.Time    `json:"created_at"`
 }
 
 type DockerClient interface {
 	Pull(distribution Distribution, tag string) *apierrors.APIError
 	Create(distribution Distribution, tag string) (*Container, *apierrors.APIError)
-	Destroy(container *Container) *apierrors.APIError
+	Get(id string) (*Container, *apierrors.APIError)
+	Destroy(id string) *apierrors.APIError
 	List() ([]Container, *apierrors.APIError)
 	Context() context.Context
 }
@@ -30,7 +34,8 @@ type dockerClient struct {
 
 func (dc *dockerClient) Pull(distribution Distribution, tag string) *apierrors.APIError {
 	options := types.ImagePullOptions{}
-	if _, err := dc.c.ImagePull(dc.Context(), "docker.io/ariel17/efimeral", options); err != nil {
+	image := createImageName(distribution, tag)
+	if _, err := dc.c.ImagePull(dc.Context(), image, options); err != nil {
 		return apierrors.NewInternalServerError(err)
 	}
 	return nil
@@ -40,13 +45,17 @@ func (dc *dockerClient) Create(distribution Distribution, tag string) (*Containe
 	return nil, nil
 }
 
-func (dc *dockerClient) Destroy(c *Container) *apierrors.APIError {
+func (dc *dockerClient) Get(id string) (*Container, *apierrors.APIError) {
+	return nil, nil
+}
+
+func (dc *dockerClient) Destroy(id string) *apierrors.APIError {
 	options := types.ContainerRemoveOptions{
 		RemoveVolumes: true,
 		RemoveLinks:   true,
 		Force:         true,
 	}
-	if err := dc.c.ContainerRemove(context.Background(), c.ID, options); err != nil {
+	if err := dc.c.ContainerRemove(context.Background(), id, options); err != nil {
 		return apierrors.NewInternalServerError(err)
 	}
 	return nil
@@ -73,6 +82,10 @@ func (dc *dockerClient) Context() context.Context {
 	return dc.context
 }
 
+func createImageName(distribution Distribution, tag string) string {
+	return fmt.Sprintf("docker.io/ariel17/efimeral:%s-%s", distribution, tag)
+}
+
 func newDockerClient() *dockerClient {
 	c, err := client.NewEnvClient()
 	if err != nil {
@@ -84,9 +97,9 @@ func newDockerClient() *dockerClient {
 	}
 }
 
-func New() DockerClient {
-	if config.Environment == config.ProductionEnv {
-		return newDockerClient()
+func NewDockerClient() DockerClient {
+	if config.Environment == config.TestEnv {
+		return newDockerMock()
 	}
-	return newDockerMock()
+	return newDockerClient()
 }

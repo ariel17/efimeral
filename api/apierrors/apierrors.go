@@ -33,7 +33,7 @@ func NewInternalServerError(err error) *APIError {
 	apiErr := APIError{
 		Description: "internal server error",
 		Cause:       err.Error(),
-		Status:      http.StatusNotFound,
+		Status:      http.StatusInternalServerError,
 	}
 	return &apiErr
 }

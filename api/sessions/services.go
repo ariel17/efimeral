@@ -1,9 +1,8 @@
 package sessions
 
 import (
-	"time"
-
 	"github.com/ariel17/efimeral/api/apierrors"
+	"github.com/ariel17/efimeral/api/config"
 )
 
 var dc DockerClient
@@ -44,14 +43,11 @@ func RemoveSession(id string) (*Session, *apierrors.APIError) {
 	if err != nil {
 		return nil, err
 	}
-	if container == nil {
-		return nil, nil
-	}
 
 	if err := dc.Destroy(id); err != nil {
 		return nil, err
 	}
-	now := time.Now().UTC()
+	now := config.Now().UTC()
 	s := Session{
 		Container: *container,
 		DeletedAt: &now,

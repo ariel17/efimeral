@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: "ariel17/efimeral:web"
+    ports:
+        - "80:80"
+
+  api:
+    image: "ariel17/efimeral:api"
+    ports:
+      - "8080:8080"
+

@@ -3,6 +3,8 @@ package config
 import (
 	"os"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -27,10 +29,11 @@ func loadProductionValues() {
 
 func init() {
 	Environment = os.Getenv("ENVIRONMENT")
+	log.Infof("ENVIRONMENT variable set to: %s", Environment)
+
 	if Environment != ProductionEnv {
 		loadTestValues()
 	} else {
 		loadProductionValues()
 	}
-
 }

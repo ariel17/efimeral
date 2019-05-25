@@ -1,11 +1,17 @@
 package sessions
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/ariel17/efimeral/api/config"
+	log "github.com/sirupsen/logrus"
 )
 
-var dc DockerClient
+var (
+	dc DockerClient
+)
 
 // NewSession builds a new container instance and returns its data associated
 // or an error if it fails.
@@ -56,19 +62,24 @@ func RemoveSession(id string) (*Session, *apierrors.APIError) {
 }
 
 func pullAvailableImages() *apierrors.APIError {
+	log.Info("pre-fetching images ...")
 	for distribution, tags := range availableDistributions {
 		for _, tag := range tags {
+			log.Infof("> %s:%s", distribution, tag)
 			if err := dc.Pull(distribution, tag); err != nil {
+				b, _ := json.Marshal(err)
+				log.Error(fmt.Sprintf("error fetching image: %s", b))
 				return err
 			}
 		}
 	}
+	log.Info("done :)")
 	return nil
 }
 
 func init() {
 	dc = NewDockerClient()
 	if err := pullAvailableImages(); err != nil {
-		panic(err)
+		panic(err.Description)
 	}
 }

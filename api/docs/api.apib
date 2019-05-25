@@ -16,13 +16,6 @@ Efimeral is an use-and-drop Linux boxes provider. This is the public API definit
 ## NotFoundError (Error)
 + status: 404 (number, required) - The HTTP status value.
 
-## Page (object)
-+ total: 10 (number, required) - Total amount of items in the resource.
-+ page: 1 (number, required) - Actual page showing content.
-
-## SessionsPage (Page)
-+ sessions (array[ActiveSession], required) - The list of existing sessions, paginated.
-
 ## NewSessionRequest (object)
 + distribution: ubuntu (string, required) - The distribution name to use.
 
@@ -32,37 +25,17 @@ Efimeral is an use-and-drop Linux boxes provider. This is the public API definit
 ## ActiveSession (object)
 + id: 63bbfea82b8880ed33cdb762aa11fab722a90a24 (string, required) - The ID of the current session.
 + distribution: ubuntu (string, required) - The distribution name used.
-+ tag: `x64-17.04` (string, required) - The distribution's tag used.
-+ created_at: `2018-12-08T12:00:00-03:00` (string, required) - The creation date of the session.
-+ running: true (boolean, required) - If the containers is currently active.
++ tag: `17.04` (string, required) - The distribution's tag used.
++ created_at: `2018-12-08T12:00:00Z` (string, required) - The creation date of the session.
 
 ## DeletedSession (ActiveSession)
-+ running: false (boolean, required) - If the containers is currently active.
-+ deleted_at: `2018-12-08T12:00:00-03:00` (string, required) - The elimination date of the session.
++ deleted_at: `2018-12-08T12:00:00Z` (string, required) - The elimination date of the session.
 
 # Group Sessions
 
 This group is about resources to manipulate user's sessions. 
 
-## Sessions [/sessions{?page,limit}]
-
-### Show existent sessions [GET]
-
-Shows current existing session IDs on the system.
-
-+ Parameters
-  + page: 1 (number, optional) - The result's page to fetch, based on the `limit` value. Default: 1.
-  + limit: 10 (number, optional) - The amount of items to fetch per page. Default: 10.
-
-+ Request Show session IDs
-
-    + Headers
-
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5c..._XiQiIkQ
-            Accept: application/json
-
-+ Response 200 (application/json)
-    + Attributes (SessionsPage)
+## Sessions [/sessions]
 
 ### Create a new session [POST]
 

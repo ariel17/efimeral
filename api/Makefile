@@ -1,6 +1,7 @@
 .PHONY: docs
 api:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+	go test ./... && \
+		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
 docs:
 	cd docs && ./node_modules/.bin/aglio -i api.apib -o api.html

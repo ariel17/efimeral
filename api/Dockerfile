@@ -7,5 +7,6 @@ COPY ["./api", "."]
 EXPOSE 8080
 
 ENV ENVIRONMENT production
+ENV BASE_URL http://localhost
 
 CMD ["./api"]

@@ -14,16 +14,19 @@ const (
 
 var (
 	Environment string
+	BaseURL     string
 	Now         func() time.Time
 )
 
 func loadTestValues() {
+	BaseURL = "http://localhost"
 	Now = func() time.Time {
 		return time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
 	}
 }
 
 func loadProductionValues() {
+	BaseURL = os.Getenv("BASE_URL")
 	Now = time.Now
 }
 

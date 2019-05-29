@@ -127,6 +127,14 @@
   version = "v0.0.7"
 
 [[projects]]
+  branch = "master"
+  digest = "1:612f7db2ea9a7621d4278988eb8928a44347c4d1a2ba1af30d3a11c5ec88f5f2"
+  name = "github.com/mercadolibre/go-meli-toolkit"
+  packages = ["goutils/logger"]
+  pruneopts = "UT"
+  revision = "ab05c9b98abfec6834b8a5647ce95dccc9b0b875"
+
+[[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
   name = "github.com/modern-go/concurrent"
   packages = ["."]
@@ -191,6 +199,13 @@
   version = "v1.1.4"
 
 [[projects]]
+  digest = "1:3f3a05ae0b95893d90b9b3b5afdb79a9b3d96e4e36e099d841ae602e4aca0da8"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  pruneopts = "UT"
+  revision = "0709b304e793a5edb4a2c0145f281ecdc20838a4"
+
+[[projects]]
   branch = "master"
   digest = "1:2954b3699dc7d134a2ad3710f170b912bd979c5513cc13d869a57a1d2e753d8b"
   name = "golang.org/x/net"
@@ -235,8 +250,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/docker/docker/api/types",
+    "github.com/docker/docker/api/types/container",
     "github.com/docker/docker/client",
     "github.com/gin-gonic/gin",
+    "github.com/mercadolibre/go-meli-toolkit/goutils/logger",
     "github.com/sirupsen/logrus",
     "github.com/stretchr/testify/assert",
   ]

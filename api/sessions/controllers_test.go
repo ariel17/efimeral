@@ -39,7 +39,7 @@ func TestSessionDistribution(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			var d SessionDistribution
+			var d OSDistribution
 			err := json.Unmarshal([]byte(tc.input), &d)
 			if tc.mustFail {
 				assert.NotNil(t, err)
@@ -58,7 +58,7 @@ func TestGetSession(t *testing.T) {
 		status int
 		body   string
 	}{
-		{"existing session", http.StatusOK, `{"id":"fake-id","distribution":"ubuntu","tag":"19.04","created_at":"2019-01-01T00:00:00Z"}`},
+		{"existing session", http.StatusOK, `{"id":"fake-id","distribution":"ubuntu","tag":"19.04","url":"http://localhost:9000","created_at":"2019-01-01T00:00:00Z"}`},
 		{"fails to fetch session", http.StatusInternalServerError, `{"description":"internal server error","cause":"mocked error","status":500}`},
 		{"not found", http.StatusNotFound, `{"description":"resource not found","cause":"","status":404}`},
 	}
@@ -72,6 +72,7 @@ func TestGetSession(t *testing.T) {
 					Distribution: ubuntu,
 					Tag:          "19.04",
 					CreatedAt:    config.Now().UTC(),
+					URL:          "http://localhost:9000",
 				}
 
 			} else if tc.status == http.StatusInternalServerError {
@@ -98,7 +99,7 @@ func TestCreateSession(t *testing.T) {
 		status int
 		body   string
 	}{
-		{"creates new session", `{"distribution":"ubuntu","tag":"19.04"}`, http.StatusCreated, `{"id":"random-id","distribution":"ubuntu","tag":"19.04","created_at":"2019-01-01T00:00:00Z"}`},
+		{"creates new session", `{"distribution":"ubuntu","tag":"19.04"}`, http.StatusCreated, `{"id":"random-id","distribution":"ubuntu","tag":"19.04","url":"http://localhost:9000","created_at":"2019-01-01T00:00:00Z"}`},
 		{"invalid distribution", `{"distribution":"xxx","tag":"yyy"}`, http.StatusBadRequest, `{"description":"invalid input data","cause":"'xxx' is not available as distribution","status":400}`},
 		{"invalid tag", `{"distribution":"ubuntu","tag":"yyy"}`, http.StatusBadRequest, `{"description":"invalid input data","cause":"'yyy' is not a valid tag for 'ubuntu' distribution","status":400}`},
 		{"fails to create new session", `{"distribution":"ubuntu","tag":"19.04"}`, http.StatusInternalServerError, `{"description":"internal server error","cause":"mocked error","status":500}`},
@@ -131,7 +132,7 @@ func TestDeleteSession(t *testing.T) {
 		status int
 		body   string
 	}{
-		{"deletes existing session", `{}`, http.StatusOK, `{"id":"fake-id","distribution":"ubuntu","tag":"19.04","created_at":"2019-01-01T00:00:00Z","deleted_at":"2019-01-01T00:00:00Z"}`},
+		{"deletes existing session", `{}`, http.StatusOK, `{"id":"fake-id","distribution":"ubuntu","tag":"19.04","url":"http://localhost:9000","created_at":"2019-01-01T00:00:00Z","deleted_at":"2019-01-01T00:00:00Z"}`},
 		{"session not found", `{}`, http.StatusNotFound, `{"description":"resource not found","cause":"","status":404}`},
 		{"fails to delete session", `{}`, http.StatusInternalServerError, `{"description":"internal server error","cause":"mocked error","status":500}`},
 	}
@@ -145,6 +146,7 @@ func TestDeleteSession(t *testing.T) {
 					Distribution: ubuntu,
 					Tag:          "19.04",
 					CreatedAt:    config.Now().UTC(),
+					URL:          "http://localhost:9000",
 				}
 
 			} else if tc.status == http.StatusInternalServerError {

@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	ProductionEnv = "production"
-	TestEnv       = "test"
+	ProductionEnv        = "production"
+	TestEnv              = "test"
+	DefaultCPUs          = int64(1)
+	DefaultMemoryInBytes = int64(1024 * 1024 * 1024) // 1 GB
 )
 
 var (

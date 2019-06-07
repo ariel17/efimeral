@@ -3,10 +3,18 @@ package sessions
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 
 	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/ariel17/efimeral/api/config"
 	log "github.com/sirupsen/logrus"
+)
+
+const (
+	creationRetries = 3 // due to already used ports
+	minPort         = 1025
+	maxPort         = 65535
+	hostIP          = "0.0.0.0"
 )
 
 var (
@@ -15,50 +23,40 @@ var (
 
 // NewSession builds a new container instance and returns its data associated
 // or an error if it fails.
-func NewSession(sr *SessionDistribution) (*Session, *apierrors.APIError) {
-	container, err := dc.Create(sr.Distribution, sr.Tag)
-	if err != nil {
-		return nil, err
+func NewSession(od *OSDistribution) (*Container, *apierrors.APIError) {
+	var (
+		c      *Container
+		apiErr *apierrors.APIError
+	)
+	for retries := 0; retries < creationRetries; retries++ {
+		hostPort := rand.Intn(maxPort-minPort) + minPort
+		c, apiErr = dc.Create(od.Distribution, od.Tag, config.DefaultCPUs, config.DefaultMemoryInBytes, hostIP, hostPort)
+		if apiErr == nil {
+			return c, nil
+		}
 	}
-	s := Session{
-		Container: *container,
-	}
-	return &s, nil
+	return nil, apiErr
 }
 
 // FetchSession returns the session data for given session ID, or an error if
 // it fails to fetch.
-func FetchSession(id string) (*Session, *apierrors.APIError) {
-	container, err := dc.Get(id)
-	if err != nil {
-		return nil, err
-	}
-	if container == nil {
-		return nil, nil
-	}
-	s := Session{
-		Container: *container,
-	}
-	return &s, nil
+func FetchSession(id string) (*Container, *apierrors.APIError) {
+	return dc.Get(id)
 }
 
 // RemoveSession terminates and removes all data about given session ID. It
 // returns its data at the delete moment or an error if the operation fails.
-func RemoveSession(id string) (*Session, *apierrors.APIError) {
+func RemoveSession(id string) (*Container, *apierrors.APIError) {
 	container, err := dc.Get(id)
 	if err != nil {
 		return nil, err
 	}
-
 	if err := dc.Destroy(id); err != nil {
 		return nil, err
 	}
 	now := config.Now().UTC()
-	s := Session{
-		Container: *container,
-		DeletedAt: &now,
-	}
-	return &s, nil
+	container.DeletedAt = &now
+	return container, nil
 }
 
 func pullAvailableImages() *apierrors.APIError {
@@ -79,7 +77,9 @@ func pullAvailableImages() *apierrors.APIError {
 
 func init() {
 	dc = NewDockerClient()
-	if err := pullAvailableImages(); err != nil {
-		panic(err.Description)
+	if config.Environment == config.ProductionEnv {
+		if err := pullAvailableImages(); err != nil {
+			panic(err.Description)
+		}
 	}
 }

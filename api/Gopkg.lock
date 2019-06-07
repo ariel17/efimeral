@@ -252,6 +252,7 @@
     "github.com/docker/docker/api/types",
     "github.com/docker/docker/api/types/container",
     "github.com/docker/docker/client",
+    "github.com/docker/go-connections/nat",
     "github.com/gin-gonic/gin",
     "github.com/mercadolibre/go-meli-toolkit/goutils/logger",
     "github.com/sirupsen/logrus",

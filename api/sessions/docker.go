@@ -2,7 +2,9 @@ package sessions
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -11,23 +13,27 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	"github.com/docker/go-connections/nat"
 	"github.com/mercadolibre/go-meli-toolkit/goutils/logger"
 )
 
 const (
 	hubRepositoryName = "docker.io/ariel17/efimeral"
+	containerPort     = "4200"
 )
 
 type Container struct {
 	ID           string       `json:"id"`
 	Distribution Distribution `json:"distribution"`
 	Tag          string       `json:"tag"`
+	URL          string       `json:"url"`
 	CreatedAt    time.Time    `json:"created_at"`
+	DeletedAt    *time.Time   `json:"deleted_at,omitempty"`
 }
 
 type DockerClient interface {
 	Pull(distribution Distribution, tag string) *apierrors.APIError
-	Create(distribution Distribution, tag string) (*Container, *apierrors.APIError)
+	Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError)
 	Get(id string) (*Container, *apierrors.APIError)
 	Destroy(id string) *apierrors.APIError
 	List() ([]Container, *apierrors.APIError)
@@ -48,9 +54,25 @@ func (dc *dockerClient) Pull(distribution Distribution, tag string) *apierrors.A
 	return nil
 }
 
-func (dc *dockerClient) Create(distribution Distribution, tag string) (*Container, *apierrors.APIError) {
+func (dc *dockerClient) Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, port int) (*Container, *apierrors.APIError) {
 	image := createImageName(distribution, tag)
-	created, err := dc.c.ContainerCreate(dc.Context(), &container.Config{Image: image}, nil, nil, "")
+	config := container.Config{Image: image}
+
+	portBinding, apiErr := newPortBinding(hostIP, port)
+	if apiErr != nil {
+		return nil, apiErr
+	}
+	hostConfig := container.HostConfig{
+		AutoRemove:   true,
+		PortBindings: portBinding,
+		Resources: container.Resources{
+			Memory:     memory,
+			MemorySwap: memory,
+			CPUCount:   cpus,
+		},
+	}
+
+	created, err := dc.c.ContainerCreate(dc.Context(), &config, &hostConfig, nil, "")
 	if err != nil {
 		return nil, apierrors.NewInternalServerError(err)
 	}
@@ -68,7 +90,16 @@ func (dc *dockerClient) Get(id string) (*Container, *apierrors.APIError) {
 		return nil, apierrors.NewInternalServerError(err)
 	}
 
+	if !cJSON.State.Running {
+		return nil, nil
+	}
+
 	distribution, tag, apiErr := parseImageName(cJSON.Config.Image)
+	if apiErr != nil {
+		return nil, apiErr
+	}
+
+	hostPort, apiErr := extractHostPort(cJSON.NetworkSettings.Ports)
 	if apiErr != nil {
 		return nil, apiErr
 	}
@@ -83,17 +114,13 @@ func (dc *dockerClient) Get(id string) (*Container, *apierrors.APIError) {
 		Distribution: distribution,
 		Tag:          tag,
 		CreatedAt:    createdAt,
+		URL:          fmt.Sprintf("%s:%d", config.BaseURL, hostPort),
 	}
 	return &c, nil
 }
 
 func (dc *dockerClient) Destroy(id string) *apierrors.APIError {
-	options := types.ContainerRemoveOptions{
-		RemoveVolumes: true,
-		RemoveLinks:   true,
-		Force:         true,
-	}
-	if err := dc.c.ContainerRemove(context.Background(), id, options); err != nil {
+	if err := dc.c.ContainerStop(dc.Context(), id, nil); err != nil {
 		return apierrors.NewInternalServerError(err)
 	}
 	return nil
@@ -150,6 +177,45 @@ func parseImageName(image string) (Distribution, string, *apierrors.APIError) {
 	}
 
 	return distribution, parts[1], nil
+}
+
+func extractHostPort(portMap nat.PortMap) (int, *apierrors.APIError) {
+	var (
+		hostPort int
+		err      error
+	)
+	for k, v := range portMap {
+		if k.Port() == containerPort {
+			hostPort, err = strconv.Atoi(v[0].HostPort)
+			if err != nil {
+				return 0, apierrors.NewInternalServerError(err)
+			}
+			break
+		}
+	}
+	if hostPort == 0 {
+		err := errors.New("cannot find port mapping for container")
+		return 0, apierrors.NewInternalServerError(err)
+	}
+	return hostPort, nil
+}
+
+func newPortBinding(hostIP string, hostPort int) (nat.PortMap, *apierrors.APIError) {
+	hostBinding := nat.PortBinding{
+		HostIP:   hostIP,
+		HostPort: strconv.Itoa(hostPort),
+	}
+
+	containerPort, err := nat.NewPort("tcp", containerPort)
+	if err != nil {
+		return nil, apierrors.NewInternalServerError(err)
+	}
+
+	portBinding := nat.PortMap{
+		containerPort: []nat.PortBinding{hostBinding},
+	}
+
+	return portBinding, nil
 }
 
 func newDockerClient() *dockerClient {

@@ -2,6 +2,7 @@ package sessions
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/ariel17/efimeral/api/config"
@@ -16,7 +17,7 @@ func (dc *dockerMock) Pull(distribution Distribution, tag string) *apierrors.API
 	return nil
 }
 
-func (dc *dockerMock) Create(distribution Distribution, tag string) (*Container, *apierrors.APIError) {
+func (dc *dockerMock) Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError) {
 	if dc.err != nil {
 		return nil, dc.err
 	}
@@ -25,6 +26,7 @@ func (dc *dockerMock) Create(distribution Distribution, tag string) (*Container,
 		Distribution: distribution,
 		Tag:          tag,
 		CreatedAt:    config.Now().UTC(),
+		URL:          fmt.Sprintf("%s:%d", config.BaseURL, 9000),
 	}
 	dc.c = &c
 	return dc.c, nil

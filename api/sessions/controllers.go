@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 
 	"github.com/ariel17/efimeral/api/apierrors"
 	"github.com/gin-gonic/gin"
@@ -26,24 +25,22 @@ var (
 	}
 )
 
-// SessionDistribution responds to the required data needed to create a new
-// session.
-type SessionDistribution struct {
+// OSDistribution responds to the required data needed to create a new session.
+type OSDistribution struct {
 	Distribution Distribution `json:"distribution"`
 	Tag          string       `json:"tag"`
 }
 
-// UnmarshalJSON is a custom implementation for unmarshalling
-// SessionDistribution in order to check valid distribution name.
-func (sd *SessionDistribution) UnmarshalJSON(data []byte) error {
-	type Alias SessionDistribution
+// UnmarshalJSON is a custom implementation for unmarshalling OSDistribution in
+// order to check valid distribution name.
+func (od *OSDistribution) UnmarshalJSON(data []byte) error {
+	type Alias OSDistribution
 	var aux Alias
 	if err := json.Unmarshal(data, &aux); err != nil {
 		return err
 	}
-
 	if tags, found := availableDistributions[aux.Distribution]; found {
-		sd.Distribution = aux.Distribution
+		od.Distribution = aux.Distribution
 		var validTag bool
 		for _, tag := range tags {
 			if aux.Tag == tag {
@@ -53,19 +50,11 @@ func (sd *SessionDistribution) UnmarshalJSON(data []byte) error {
 		if !validTag {
 			return fmt.Errorf("'%s' is not a valid tag for '%s' distribution", aux.Tag, aux.Distribution)
 		}
-		sd.Tag = aux.Tag
-
+		od.Tag = aux.Tag
 	} else {
 		return fmt.Errorf("'%s' is not available as distribution", aux.Distribution)
 	}
-
 	return nil
-}
-
-// Session represents a SO container instance on the Docker service.
-type Session struct {
-	Container
-	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 }
 
 // CreateSession handles the POST method to create a new session.
@@ -76,20 +65,17 @@ func CreateSession(c *gin.Context) {
 		c.JSON(apiErr.Status, apiErr)
 		return
 	}
-
-	var sr SessionDistribution
-	if err := json.Unmarshal(body, &sr); err != nil {
+	var od OSDistribution
+	if err := json.Unmarshal(body, &od); err != nil {
 		apiErr := apierrors.NewBadRequestError(err)
 		c.JSON(apiErr.Status, apiErr)
 		return
 	}
-
-	s, apiErr := NewSession(&sr)
+	s, apiErr := NewSession(&od)
 	if apiErr != nil {
 		c.JSON(apiErr.Status, apiErr)
 		return
 	}
-
 	c.JSON(http.StatusCreated, s)
 }
 
@@ -101,7 +87,6 @@ func GetSession(c *gin.Context) {
 		c.JSON(err.Status, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, s)
 }
 
@@ -113,6 +98,5 @@ func DeleteSession(c *gin.Context) {
 		c.JSON(err.Status, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, s)
 }

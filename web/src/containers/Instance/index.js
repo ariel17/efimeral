@@ -23,16 +23,26 @@ class Instance extends Component {
         super(props, context);
         this.state = {
             distro: props.distro,
+            loading: true
         }
     }
 
-    showModal = (e) => {
-       e.preventDefault();
-       this.setState({show: true});
-    }
-
-    closeModal = () => {
-        this.setState({show: false});
+    componentDidMount = () => {
+        const apiURL = process.env.REACT_APP_API_URL;
+        fetch(apiURL+"/sessions", {
+            method: "POST",
+            body: JSON.stringify({
+                "distribution": "ubuntu",
+                "tag": "19.04"
+            })
+        })
+        .then(response => response.json()) 
+        .then(data => {
+            console.log(data);
+            this.setState({
+                loading: false
+            })
+        });
     }
 
     render = () => {
@@ -43,6 +53,13 @@ class Instance extends Component {
                 <section>
                     <Row>
                         <Col md="12" sm="12">
+                            {this.state.loading && 
+                                <h3>LOADING ...</h3>
+                            }
+                            {!this.state.loading && 
+                                <h3>SUCCESSS :)</h3>
+                            }
+
                             <P>
                                 // TODO: Here goes the instance iframe
                             </P>

@@ -29,6 +29,7 @@ func NewSession(od *OSDistribution) (*Container, *apierrors.APIError) {
 		apiErr *apierrors.APIError
 	)
 	for retries := 0; retries < creationRetries; retries++ {
+		rand.Seed(config.Now().UTC().UnixNano())
 		hostPort := rand.Intn(maxPort-minPort) + minPort
 		c, apiErr = dc.Create(od.Distribution, od.Tag, config.DefaultCPUs, config.DefaultMemoryInBytes, hostIP, hostPort)
 		if apiErr == nil {

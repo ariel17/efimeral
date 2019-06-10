@@ -71,6 +71,9 @@ func CreateSession(c *gin.Context) {
 		c.JSON(apiErr.Status, apiErr)
 		return
 	}
+
+	c.Header("Access-Control-Allow-Origin", "*")
+
 	s, apiErr := NewSession(&od)
 	if apiErr != nil {
 		c.JSON(apiErr.Status, apiErr)

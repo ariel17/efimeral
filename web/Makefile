@@ -2,13 +2,10 @@
 install:
 	yarn install
 
-build: install
-	yarn run build
-
 deploy: install
 	yarn run deploy
 
-image: build
+image:
 	docker build . -t ariel17/efimeral:web && \
 		docker push ariel17/efimeral:web
 

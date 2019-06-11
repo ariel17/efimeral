@@ -5,7 +5,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - API_URL=http://localhost:8080
+      - REACT_APP_API_URL=http://localhost:8080
 
   api:
     image: "ariel17/efimeral:api"

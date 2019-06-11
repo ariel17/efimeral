@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/efimeral/static/css/main.889459e0.chunk.css",
-    "main.js": "/efimeral/static/js/main.24d21503.chunk.js",
-    "main.js.map": "/efimeral/static/js/main.24d21503.chunk.js.map",
-    "runtime~main.js": "/efimeral/static/js/runtime~main.9a19c980.js",
-    "runtime~main.js.map": "/efimeral/static/js/runtime~main.9a19c980.js.map",
-    "static/css/2.22a7d4ef.chunk.css": "/efimeral/static/css/2.22a7d4ef.chunk.css",
-    "static/js/2.86d477f3.chunk.js": "/efimeral/static/js/2.86d477f3.chunk.js",
-    "static/js/2.86d477f3.chunk.js.map": "/efimeral/static/js/2.86d477f3.chunk.js.map",
-    "index.html": "/efimeral/index.html",
-    "precache-manifest.0d8f4a2ac2fa65dd78cdbf2f1d0dfe40.js": "/efimeral/precache-manifest.0d8f4a2ac2fa65dd78cdbf2f1d0dfe40.js",
-    "service-worker.js": "/efimeral/service-worker.js",
-    "static/css/2.22a7d4ef.chunk.css.map": "/efimeral/static/css/2.22a7d4ef.chunk.css.map",
-    "static/css/main.889459e0.chunk.css.map": "/efimeral/static/css/main.889459e0.chunk.css.map",
-    "static/media/arch.png": "/efimeral/static/media/arch.31b209af.png",
-    "static/media/stylesheet.css": "/efimeral/static/media/mm3__.e1ebb8fb.eot"
+    "main.css": "http://ariel17.com.ar/efimeral/static/css/main.803d7aa1.chunk.css",
+    "main.js": "http://ariel17.com.ar/efimeral/static/js/main.616c3c00.chunk.js",
+    "main.js.map": "http://ariel17.com.ar/efimeral/static/js/main.616c3c00.chunk.js.map",
+    "runtime~main.js": "http://ariel17.com.ar/efimeral/static/js/runtime~main.eb731b4d.js",
+    "runtime~main.js.map": "http://ariel17.com.ar/efimeral/static/js/runtime~main.eb731b4d.js.map",
+    "static/css/2.22a7d4ef.chunk.css": "http://ariel17.com.ar/efimeral/static/css/2.22a7d4ef.chunk.css",
+    "static/js/2.04e9fa65.chunk.js": "http://ariel17.com.ar/efimeral/static/js/2.04e9fa65.chunk.js",
+    "static/js/2.04e9fa65.chunk.js.map": "http://ariel17.com.ar/efimeral/static/js/2.04e9fa65.chunk.js.map",
+    "index.html": "http://ariel17.com.ar/efimeral/index.html",
+    "precache-manifest.b67ad318121f15a6ff6121a22a4a2975.js": "http://ariel17.com.ar/efimeral/precache-manifest.b67ad318121f15a6ff6121a22a4a2975.js",
+    "service-worker.js": "http://ariel17.com.ar/efimeral/service-worker.js",
+    "static/css/2.22a7d4ef.chunk.css.map": "http://ariel17.com.ar/efimeral/static/css/2.22a7d4ef.chunk.css.map",
+    "static/css/main.803d7aa1.chunk.css.map": "http://ariel17.com.ar/efimeral/static/css/main.803d7aa1.chunk.css.map",
+    "static/media/arch.png": "http://ariel17.com.ar/efimeral/static/media/arch.31b209af.png",
+    "static/media/stylesheet.css": "http://ariel17.com.ar/efimeral/static/media/mm3__.e1ebb8fb.eot"
   }
 }

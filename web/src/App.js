@@ -12,7 +12,7 @@ class App extends Component {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/ubuntu' render={
-                (props) => <Instance distro="ubuntu" />
+                (props) => <Instance distribution="ubuntu" tag="19.04" />
               } />
               <Route path='/arch' render={
                 (props) => <Instance distro="arch" />

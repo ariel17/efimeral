@@ -5,15 +5,9 @@ import C from '../../components/Container';
 import Header from '../../components/Header';
 
 
-const P = styled.p`
-    font-size: 1em;
-    color: white;
-    text-align: left;
-    margin: 0;
-
-    @media (min-width: 500px) {
-        margin: 30px;
-    }
+const Iframe = styled.iframe`
+    height: 93vh;
+    width: 100vw;
 `
 
 
@@ -22,8 +16,10 @@ class Instance extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            distro: props.distro,
-            loading: true
+            distribution: props.distribution,
+            tag: props.tag,
+            loading: true,
+            url: null
         }
     }
 
@@ -32,15 +28,16 @@ class Instance extends Component {
         fetch(apiURL+"/sessions", {
             method: "POST",
             body: JSON.stringify({
-                "distribution": "ubuntu",
-                "tag": "19.04"
+                "distribution": this.state.distribution,
+                "tag": this.state.tag
             })
         })
         .then(response => response.json()) 
         .then(data => {
             console.log(data);
             this.setState({
-                loading: false
+                loading: false,
+                url: data.url
             })
         });
     }
@@ -57,13 +54,8 @@ class Instance extends Component {
                                 <h3>LOADING ...</h3>
                             }
                             {!this.state.loading && 
-                                <h3>SUCCESSS :)</h3>
+                                <Iframe src={this.state.url} title="Container instance" frameBorder="0" allowfullscreen></Iframe>
                             }
-
-                            <P>
-                                // TODO: Here goes the instance iframe
-                            </P>
-
                         </Col>
                     </Row>
                 </section>

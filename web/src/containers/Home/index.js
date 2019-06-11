@@ -77,7 +77,7 @@ class Home extends Component {
                     </Title>
                     <Distributions>
                         <Col md="6" sm="12">
-                            <a href="/ubuntu" onClick={this.showModal}><Ubuntu /></a>
+                            <a href={process.env.PUBLIC_URL + '/#/ubuntu'}><Ubuntu /></a>
                         </Col>
                         <Col md="6" sm="12">
                             <a href="/arch" onClick={this.showModal}><Arch /></a>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap'
 import C from '../../components/Container';
 import Header from '../../components/Header';
+import Loader from '../../components/Loader';
 
 
 const Iframe = styled.iframe`
@@ -51,7 +52,7 @@ class Instance extends Component {
                     <Row>
                         <Col md="12" sm="12">
                             {this.state.loading && 
-                                <h3>LOADING ...</h3>
+                                <Loader loading={this.state.loading} />
                             }
                             {!this.state.loading && 
                                 <Iframe src={this.state.url} title="Container instance" frameBorder="0" allowfullscreen></Iframe>

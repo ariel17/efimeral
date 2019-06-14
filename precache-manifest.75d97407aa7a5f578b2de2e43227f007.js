@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ef8d3d1d09dd95d1eb86135e0efc4c93",
+    "revision": "5f3e9b7af98eb23fb9504b96254157f5",
     "url": "http://ariel17.com.ar/efimeral/index.html"
   },
   {
-    "revision": "ea6b3c629175cb113f60",
+    "revision": "1fa5335da5db2f9dfde6",
     "url": "http://ariel17.com.ar/efimeral/static/css/2.22a7d4ef.chunk.css"
   },
   {
-    "revision": "4ee9dd149e28cc36cf11",
+    "revision": "509c7cb3e80c023b7d0b",
     "url": "http://ariel17.com.ar/efimeral/static/css/main.803d7aa1.chunk.css"
   },
   {
-    "revision": "ea6b3c629175cb113f60",
-    "url": "http://ariel17.com.ar/efimeral/static/js/2.04e9fa65.chunk.js"
+    "revision": "1fa5335da5db2f9dfde6",
+    "url": "http://ariel17.com.ar/efimeral/static/js/2.2ec949da.chunk.js"
   },
   {
-    "revision": "4ee9dd149e28cc36cf11",
-    "url": "http://ariel17.com.ar/efimeral/static/js/main.616c3c00.chunk.js"
+    "revision": "509c7cb3e80c023b7d0b",
+    "url": "http://ariel17.com.ar/efimeral/static/js/main.8dc20456.chunk.js"
   },
   {
     "revision": "e1f3f71c17cec591073c",

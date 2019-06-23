@@ -74,6 +74,14 @@
   version = "v0.4.0"
 
 [[projects]]
+  digest = "1:32b71323a63bd59ca45634beb79bd176e81cab35274b8c534ad1043c12d1a840"
+  name = "github.com/getsentry/sentry-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b88ea5af4eef2fd34d9b7828ce98d80c0c2dfc26"
+  version = "v0.1.0"
+
+[[projects]]
   branch = "master"
   digest = "1:a4b5a6b32f33323c7850fae4ec085a0fbac3be93c057b6b8cef5bcabe24645ac"
   name = "github.com/gin-contrib/sse"
@@ -253,6 +261,7 @@
     "github.com/docker/docker/api/types/container",
     "github.com/docker/docker/client",
     "github.com/docker/go-connections/nat",
+    "github.com/getsentry/sentry-go",
     "github.com/gin-gonic/gin",
     "github.com/mercadolibre/go-meli-toolkit/goutils/logger",
     "github.com/sirupsen/logrus",

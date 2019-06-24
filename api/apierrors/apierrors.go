@@ -1,6 +1,7 @@
 package apierrors
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -28,10 +29,12 @@ func NewBadRequestError(err error) *APIError {
 
 // NewNotFoundError creates a new APIError for resource not found.
 func NewNotFoundError() *APIError {
+	err := errors.New("resource not found")
 	apiErr := APIError{
-		Description: "resource not found",
+		Description: err.Error(),
 		Status:      http.StatusNotFound,
 	}
+	sentry.CaptureException(err)
 	return &apiErr
 }
 
@@ -47,13 +50,12 @@ func NewInternalServerError(err error) *APIError {
 }
 
 func init() {
-	if config.Environment == config.ProductionEnv {
-		err := sentry.Init(sentry.ClientOptions{
-			Dsn: "https://a07934d966db496eb3a27b003d6e9bfe:49b4d993cc74473bbf9d004edbef7e3c@sentry.io/1488418",
-		})
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn:   config.SentryDSN,
+		Debug: config.Environment != config.ProductionEnv,
+	})
 
-		if err != nil {
-			panic(fmt.Sprintf("Sentry initialization failed: %v\n", err))
-		}
+	if err != nil {
+		panic(fmt.Sprintf("Sentry initialization failed: %v", err))
 	}
 }

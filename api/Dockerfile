@@ -8,5 +8,6 @@ EXPOSE 8080
 
 ENV ENVIRONMENT production
 ENV BASE_URL http://localhost
+ENV GIN_MODE release
 
 CMD ["./api"]

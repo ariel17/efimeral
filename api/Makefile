@@ -1,3 +1,6 @@
+.DEFAULT_GOAL := default
+IMAGE = ariel17/efimeral:api
+
 api-install:
 	dep ensure
 
@@ -13,14 +16,19 @@ docs-build: docs-install
 
 build: api-build docs-build
 
-image: build
-	docker build . -t ariel17/efimeral:api && \
-		docker push ariel17/efimeral:api
+image-build: build
+	docker build . -t $(IMAGE)
 
-up: build
-	docker run -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ariel17/efimeral:api
+image-push:
+	docker push $(IMAGE)
+
+image-up: image-build
+	docker run -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock $(IMAGE)
+
+up:
+	ENVIRONMENT=production BASE_URL=http://localhost GIN_MODE=release go run api.go
 
 clean:
 	rm api && rm docs/*.html
 
-all: image
+default: image-build image-push

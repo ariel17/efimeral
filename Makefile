@@ -1,18 +1,13 @@
-.PHONY: api web images
-api:
-	cd api && $(MAKE) all
+.DEFAULT_GOAL := default
 
-web:
-	cd web && $(MAKE) all
-
-images:
-	cd images && $(MAKE) all
-
-up:
+image-up:
 	docker-compose up -d && \
 		docker-compose logs -f
 
-clean:
+image-clean:
 	docker-compose rm -fsv
 
-all: api web images
+default:
+	$(MAKE) -C api
+	$(MAKE) -C web
+	$(MAKE) -C images

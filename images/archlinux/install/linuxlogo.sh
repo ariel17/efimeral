@@ -1,11 +1,7 @@
 #!/bin/sh
 
-pushd /tmp
+pushd /tmp/linux_logo
 
-git clone https://aur.archlinux.org/linux_logo.git
-pushd linux_logo
+pacman -U linux_logo*.pkg.tar* --noconfirm
 
-makepkg -si
-
-popd
 popd

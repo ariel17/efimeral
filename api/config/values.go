@@ -12,6 +12,7 @@ const (
 	TestEnv              = "test"
 	DefaultCPUs          = int64(1)
 	DefaultMemoryInBytes = int64(1024 * 1024 * 1024) // 1 GB
+	CleanTimeLapse       = 10 * time.Minute
 )
 
 var (

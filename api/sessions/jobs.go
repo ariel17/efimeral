@@ -4,30 +4,39 @@ import (
 	"time"
 
 	"github.com/ariel17/efimeral/api/config"
+	log "github.com/sirupsen/logrus"
 )
 
-var (
-	ch chan struct{}
-)
-
-func RunSessionCleaner() {
-	go producer()
-	go consumer()
+// RunCleaner ticks for configured time steps for deleting older existing sessions.
+func RunCleaner() {
+	go cleaner()
 }
 
-func producer() {
+func cleaner() {
 	for range time.Tick(config.CleanTimeLapse) {
-		ch <- struct{}{}
-	}
-}
+		containers, err := dc.List()
+		if err != nil {
+			log.Errorf("Cannot list existing containers: %v", err)
+			if config.Environment != config.ProductionEnv {
+				panic(err.Err)
+			}
+		}
 
-func consumer() {
-	for range ch {
-		// TODO call Docker API to list active sessions
-		// TODO remove older sessions
+		log.Infof("%d container(s) to check for expiration", len(containers))
+		removed := 0
+		for _, c := range containers {
+			if c.HasExpired(config.MaxSessionDuration) {
+				if err := dc.Destroy(c.ID); err != nil {
+					log.Errorf("Cannot destroy container ID=%s: %v", c.ID, err)
+					if config.Environment != config.ProductionEnv {
+						panic(err.Err)
+					}
+				} else {
+					log.Infof("Container ID=%s destroyed by expiration", c.ID)
+					removed++
+				}
+			}
+		}
+		log.Infof("%d container(s) removed", removed)
 	}
-}
-
-func init() {
-	ch = make(chan struct{})
 }

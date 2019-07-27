@@ -8,5 +8,6 @@ import (
 func main() {
 	r := gin.Default()
 	sessions.Routes(r)
+	sessions.RunCleaner()
 	r.Run()
 }

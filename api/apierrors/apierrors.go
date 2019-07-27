@@ -11,6 +11,7 @@ import (
 
 // APIError is the JSON body to show on a failed response.
 type APIError struct {
+	Err         error  `json:"-"`
 	Description string `json:"description"`
 	Cause       string `json:"cause"`
 	Status      int    `json:"status"`
@@ -19,6 +20,7 @@ type APIError struct {
 // NewBadRequestError creates a new APIError for invalid input.
 func NewBadRequestError(err error) *APIError {
 	apiErr := APIError{
+		Err:         err,
 		Description: "invalid input data",
 		Cause:       err.Error(),
 		Status:      http.StatusBadRequest,
@@ -31,6 +33,7 @@ func NewBadRequestError(err error) *APIError {
 func NewNotFoundError() *APIError {
 	err := errors.New("resource not found")
 	apiErr := APIError{
+		Err:         err,
 		Description: err.Error(),
 		Status:      http.StatusNotFound,
 	}
@@ -41,6 +44,7 @@ func NewNotFoundError() *APIError {
 // NewInternalServerError creates a new APIError for internal errors.
 func NewInternalServerError(err error) *APIError {
 	apiErr := APIError{
+		Err:         err,
 		Description: "internal server error",
 		Cause:       err.Error(),
 		Status:      http.StatusInternalServerError,

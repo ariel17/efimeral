@@ -1,13 +1,18 @@
 .PHONY: build
+.DEFAULT_GOAL := default
+IMAGE = ariel17/efimeral:web
+
 install:
 	yarn install
 
 deploy: install
 	yarn run deploy
 
-image:
-	docker build . -t ariel17/efimeral:web && \
-		docker push ariel17/efimeral:web
+image-build:
+	docker build . -t $(IMAGE)
+
+image-push:
+	docker push $(IMAGE)
 
 up: install
 	yarn start
@@ -15,4 +20,4 @@ up: install
 clean: 
 	rm -rf build
 
-all: deploy image
+default: deploy image-build image-push

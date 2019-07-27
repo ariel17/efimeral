@@ -60,7 +60,7 @@ func RemoveSession(id string) (*Container, *apierrors.APIError) {
 	return container, nil
 }
 
-func pullAvailableImages() *apierrors.APIError {
+func PullAvailableImages() *apierrors.APIError {
 	log.Info("pre-fetching images ...")
 	for distribution, tags := range availableDistributions {
 		for _, tag := range tags {
@@ -78,9 +78,4 @@ func pullAvailableImages() *apierrors.APIError {
 
 func init() {
 	dc = NewDockerClient()
-	if config.Environment == config.ProductionEnv {
-		if err := pullAvailableImages(); err != nil {
-			panic(err.Description)
-		}
-	}
 }

@@ -31,6 +31,11 @@ type Container struct {
 	DeletedAt    *time.Time   `json:"deleted_at,omitempty"`
 }
 
+func (c Container) HasExpired(d time.Duration) bool {
+	running := config.Now().Sub(c.CreatedAt)
+	return running > d
+}
+
 type DockerClient interface {
 	Pull(distribution Distribution, tag string) *apierrors.APIError
 	Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError)

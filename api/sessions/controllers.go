@@ -15,13 +15,13 @@ type Distribution string
 
 const (
 	ubuntu Distribution = "ubuntu"
-	arch   Distribution = "arch"
+	arch   Distribution = "archlinux"
 )
 
 var (
 	availableDistributions = map[Distribution][]string{
 		ubuntu: []string{"19.04"},
-		arch:   []string{},
+		arch:   []string{"latest"},
 	}
 )
 

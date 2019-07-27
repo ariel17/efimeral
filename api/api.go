@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ariel17/efimeral/api/config"
 	"github.com/ariel17/efimeral/api/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -8,5 +9,15 @@ import (
 func main() {
 	r := gin.Default()
 	sessions.Routes(r)
-	r.Run()
+	sessions.RunCleaner()
+
+	if config.Environment == config.ProductionEnv {
+		if err := sessions.PullAvailableImages(); err != nil {
+			panic(err.Err)
+		}
+	}
+
+	if err := r.Run(); err != nil {
+		panic(err)
+	}
 }

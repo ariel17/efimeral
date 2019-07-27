@@ -28,6 +28,9 @@ image-up: image-build
 up:
 	ENVIRONMENT=production BASE_URL=http://localhost GIN_MODE=release go run api.go
 
+up-development:
+	ENVIRONMENT=development BASE_URL=http://localhost go run api.go
+
 clean:
 	rm api && rm docs/*.html
 

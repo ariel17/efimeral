@@ -1,13 +1,5 @@
 version: '3'
 services:
-  web:
-    image: "ariel17/efimeral:web"
-    ports:
-      - "80:80"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
-      - PUBLIC_URL=
-
   api:
     image: "ariel17/efimeral:api"
     ports:
@@ -17,3 +9,19 @@ services:
     environment:
       - BASE_URL=http://localhost
 
+  docs:
+    image: "ariel17/efimeral:docs"
+    ports:
+      - "9090:80"
+
+  web:
+    image: "ariel17/efimeral:web"
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+      - REACT_APP_DOCS_URL=http://localhost:9090
+      - PUBLIC_URL=
+    depends_on:
+      - api
+      - docs

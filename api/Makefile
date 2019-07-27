@@ -8,15 +8,7 @@ api-build: api-install
 	go test ./... && \
 		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-docs-install:
-	cd docs && yarn install
-
-docs-build: docs-install
-	cd docs && ./node_modules/.bin/aglio -i api.apib -o api.html
-
-build: api-build docs-build
-
-image-build: build
+image-build: api-build
 	docker build . -t $(IMAGE)
 
 image-push:
@@ -32,6 +24,6 @@ up-development:
 	ENVIRONMENT=development BASE_URL=http://localhost go run api.go
 
 clean:
-	rm api && rm docs/*.html
+	rm -rf api vendor
 
 default: image-build image-push

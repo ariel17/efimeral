@@ -11,3 +11,4 @@ default:
 	$(MAKE) -C api
 	$(MAKE) -C web
 	$(MAKE) -C images
+	$(MAKE) -C docs

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "http://ariel17.com.ar/efimeral/precache-manifest.ad1501371e479b699fcba3627afae761.js"
+  "http://ariel17.com.ar/efimeral/precache-manifest.ead1ee1b657b82d2c464f87a114bed3e.js"
 );
 
 self.addEventListener('message', (event) => {

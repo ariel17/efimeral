@@ -39,7 +39,6 @@ func loadProductionValues() {
 	SentryDSN = "https://a07934d966db496eb3a27b003d6e9bfe@sentry.io/1488418"
 	MaxSessionDuration = 20 * time.Minute
 	CleanTimeLapse = 10 * time.Minute
-
 }
 
 func init() {

@@ -1,38 +1,94 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
-  build:
+  api_build:
     docker:
-      # specify the version you desire here
-      - image: circleci/node:7.10
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+      - image: circleci/golang:1.12.7
+    working_directory: /go/src/github.com/ariel17/efimeral
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: yarn install
-
-      - save_cache:
+      - run: cd api && make api-build
+      - store_artifacts:
+          path: ./api/api
+      - persist_to_workspace:
+          root: api
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
-      - run: ./node_modules/.bin/aglio -i api.apib -o api.html
+            - api
 
+  api_image:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cp /tmp/workspace/api ./api
+      - run: cd api && make image-push
+
+  docs_build:
+    docker:
+      - image: circleci/node:12.6.0
+    steps:
+      - checkout
+      - run: cd docs && make docs-build
+      - store_artifacts:
+          path: ./docs/index.html
+      - persist_to_workspace:
+          root: docs
+          paths:
+            - index.html
+
+  docs_image:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cp /tmp/workspace/index.html ./docs
+      - run: cd docs && make image-push
+
+  web_build:
+    docker:
+      - image: circleci/node:12.6.0
+    steps:
+      - checkout
+      - run: git config --global user.email "ariel.gerardo.rios@gmail.com"
+      - run: git config --global user.name "Ariel Gerardo Ríos"
+      - run: cd web && make build
+      - store_artifacts:
+          path: ./web/build
+      - persist_to_workspace:
+          root: web
+          paths:
+            - build
+
+  web_image:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cp -r /tmp/workspace/build ./web
+      - run: cd web && make image-push
+
+workflows:
+  version: 2
+  api:
+    jobs:
+      - api_build
+      - api_image:
+          requires:
+            - api_build
+  docs:
+    jobs:
+      - docs_build
+      - docs_image:
+          requires:
+            - docs_build
+  web:
+    jobs:
+      - web_build
+      - web_image:
+          requires:
+            - web_build

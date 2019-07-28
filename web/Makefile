@@ -5,6 +5,9 @@ IMAGE = ariel17/efimeral:web
 install:
 	yarn install
 
+build: install
+	yarn run build
+
 deploy: install
 	yarn run deploy
 

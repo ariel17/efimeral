@@ -14,7 +14,7 @@ deploy: install
 image-build:
 	docker build . -t $(IMAGE)
 
-image-push:
+image-push: image-build
 	docker push $(IMAGE)
 
 up: install
@@ -23,4 +23,4 @@ up: install
 clean: 
 	rm -rf build
 
-default: deploy image-build image-push
+default: deploy image-push

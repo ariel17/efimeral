@@ -8,10 +8,10 @@ api-build: api-install
 	go test ./... && \
 		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-image-build: api-build
+image-build:
 	docker build . -t $(IMAGE)
 
-image-push:
+image-push: image-build
 	docker push $(IMAGE)
 
 image-up: image-build
@@ -26,4 +26,4 @@ up-development:
 clean:
 	rm -rf api vendor
 
-default: image-build image-push
+default: api-build image-push

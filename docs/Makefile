@@ -10,7 +10,7 @@ docs-build: docs-install
 image-build:
 	docker build . -t $(IMAGE)
 
-image-push:
+image-push: image-build
 	docker push $(IMAGE)
 
 up: image-build

@@ -1,5 +1,7 @@
 ![logo](logo.png)
 
+[![CircleCI](https://circleci.com/gh/ariel17/efimeral/tree/master.svg?style=svg)](https://circleci.com/gh/ariel17/efimeral/tree/master)
+
 # Efimeral
 
 Web servers in your browser! Efimeral can create _ephemeral_ Linux instances

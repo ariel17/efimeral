@@ -63,10 +63,6 @@ $ make
 * [CircleCI](https://circleci.com/): Continuous integration service.
 * [Sentry](https://sentry.io): Production error tracker.
 
-## Contributing
-
-TODO CONTRIBUTING.md
-
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning.

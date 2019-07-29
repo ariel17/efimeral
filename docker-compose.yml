@@ -1,27 +1,37 @@
 version: '3'
 services:
+
   api:
     image: "ariel17/efimeral:api"
     ports:
-      - "8080:8080"
+      - "8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - BASE_URL=http://localhost
+      - BASE_URL=http://efimeral.com.ar
 
   docs:
     image: "ariel17/efimeral:docs"
     ports:
-      - "9090:80"
+      - "80"
 
   web:
     image: "ariel17/efimeral:web"
     ports:
-      - "80:80"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
-      - REACT_APP_DOCS_URL=http://localhost:9090
-      - PUBLIC_URL=
+      - "80"
     depends_on:
       - api
       - docs
+
+  nginx:
+    image: "ariel17/efimeral:nginx"
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - docs
+      - web
+    links:
+      - api
+      - docs
+      - web

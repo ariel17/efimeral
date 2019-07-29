@@ -1,9 +1,9 @@
 FROM node:12.6.0-buster as build
 WORKDIR /app
 COPY . .
-ENV REACT_APP_API_URL=http://localhost:8080
-ENV REACT_APP_DOCS_URL=http://localhost:9090
-ENV PUBLIC_URL=
+ARG REACT_APP_API_URL=http://localhost:8080
+ARG REACT_APP_DOCS_URL=http://localhost:9090
+ARG PUBLIC_URL=
 RUN echo "REACT_APP_API_URL=${REACT_APP_API_URL}" > .env
 RUN echo "REACT_APP_DOCS_URL=${REACT_APP_DOCS_URL}" > .env
 RUN echo "PUBLIC_URL=${PUBLIC_URL}" >> .env

@@ -11,16 +11,21 @@ build: install
 deploy: install
 	yarn run deploy
 
-image-build:
+image-build-development:
 	docker build . -t $(IMAGE)
 
-image-push: image-build
+image-build-production:
+	docker build . --build-arg REACT_APP_API_URL=http://api.efimeral.com.ar \
+		--build-arg REACT_APP_DOCS_URL=/docs/index.html \
+		--build-arg PUBLIC_URL= -t $(IMAGE)
+
+image-push: image-build-production
 	docker push $(IMAGE)
 
 up: install
 	yarn start
 
 clean: 
-	rm -rf build
+	rm -rf build node_modules
 
 default: deploy image-push

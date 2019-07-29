@@ -79,6 +79,13 @@ jobs:
       - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
       - run: cd nginx && make
 
+  instance_images:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - run: cd images && make
+
 workflows:
   version: 2
   api:
@@ -90,6 +97,7 @@ workflows:
           filters:
             branches:
               only: master
+
   docs:
     jobs:
       - docs_build
@@ -99,6 +107,7 @@ workflows:
           filters:
             branches:
               only: master
+
   web:
     jobs:
       - web_build
@@ -108,9 +117,17 @@ workflows:
           filters:
             branches:
               only: master
+
   nginx:
     jobs:
       - nginx_image:
+          filters:
+            branches:
+              only: master
+
+  instance:
+    jobs:
+      - instance_image:
           filters:
             branches:
               only: master

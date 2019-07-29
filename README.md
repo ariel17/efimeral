@@ -2,92 +2,76 @@
 
 # Efimeral
 
-One Paragraph of project description goes here
+Web servers in your browser! Efimeral can create _ephemeral_ Linux instances
+for free, for a short period of time.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes. See deployment for notes on
+how to deploy the project on a live system.
 
 ### Prerequisites
+
+* NodeJS v12.6.0
+* Yarn v1.15.2
+* Golang v1.12.7
+* Docker v17.12.0-ce
+* docker-compose v1.18.0
 
 For local development, domain `efimeral.com.ar` and `api.efimeral.com.ar` must
 point to `localhost`:
 
 ```
-# In /etc/hosts
+# /etc/hosts
 127.0.0.1 efimeral.com.ar
 127.0.0.1 api.efimeral.com.ar
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+Each sub-project has a `Makefile` with default target that builds & tests the
+artifact (if some), builds the Docker image and pushes it into the Hub. All
+sub-project is chained to a main `Makefile` in the project's root path:
 
 ```
-until finished
+$ make
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+### Web
+
+* [create-react-app](https://facebook.github.io/create-react-app/): React
+  application scaffolnding.
+* [Bootstrap](https://getbootstrap.com/): Style framework.
+* [Font Awesome](https://fontawesome.com/): Nice font symbols.
+
+### API
+
+* [gin-gonic](https://gin-gonic.com/): Web framework for Golang.
+* [testify](https://github.com/stretchr/testify): Test utilities.
+
+### Docs
+
+* [API Blueprint](https://apiblueprint.org/): High level description for API.
+* [aglio](https://github.com/danielgtaylor/aglio): APIB renderer.
+
+### For all
+
+* [Nginx](https://www.nginx.com/): Simple web server.
+* [CircleCI](https://circleci.com/): Continuous integration service.
+* [Sentry](https://sentry.io): Production error tracker.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+TODO CONTRIBUTING.md
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+We use [SemVer](http://semver.org/) for versioning.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+This project is licensed under the GNU GPLv3 License; see the
+[LICENSE.md](LICENSE.md) file for details.

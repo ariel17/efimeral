@@ -10,10 +10,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+For local development, domain `efimeral.com.ar` and `api.efimeral.com.ar` must
+point to `localhost`:
 
 ```
-Give examples
+# In /etc/hosts
+127.0.0.1 efimeral.com.ar
+127.0.0.1 api.efimeral.com.ar
 ```
 
 ### Installing

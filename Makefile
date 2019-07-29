@@ -1,10 +1,10 @@
 .DEFAULT_GOAL := default
 
-image-up:
+up:
 	docker-compose up -d && \
 		docker-compose logs -f
 
-image-clean:
+clean:
 	docker-compose rm -fsv
 
 default:

@@ -127,7 +127,7 @@ workflows:
 
   instance:
     jobs:
-      - instance_image:
+      - instance_images:
           filters:
             branches:
               only: master

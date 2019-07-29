@@ -72,6 +72,13 @@ jobs:
       - run: cp -r /tmp/workspace/build ./web
       - run: cd web && make image-push
 
+  nginx_image:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - run: cd nginx && make
+
 workflows:
   version: 2
   api:
@@ -98,6 +105,12 @@ workflows:
       - web_image:
           requires:
             - web_build
+          filters:
+            branches:
+              only: master
+  nginx:
+    jobs:
+      - nginx_image:
           filters:
             branches:
               only: master

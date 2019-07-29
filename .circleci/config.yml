@@ -80,15 +80,24 @@ workflows:
       - api_image:
           requires:
             - api_build
+          filters:
+            branches:
+              only: master
   docs:
     jobs:
       - docs_build
       - docs_image:
           requires:
             - docs_build
+          filters:
+            branches:
+              only: master
   web:
     jobs:
       - web_build
       - web_image:
           requires:
             - web_build
+          filters:
+            branches:
+              only: master

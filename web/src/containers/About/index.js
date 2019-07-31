@@ -57,21 +57,66 @@ class About extends Component {
                     <Row>
                         <Col md="12" sm="12">
                             <P>
-                                The standard Lorem Ipsum passage, used since the 1500s
-                                <br />
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                <h2>What?</h2>
+                                Efimeral creates Linux containers accessible
+                                through any web browser and disposables in a
+                                short period of time. Ubuntu and ArchLinux are
+                                the available images for public usage and free,
+                                customized with a lot of development
+                                tools and languajes.<br />
                             </P>
-
+                        </Col>
+                        <Col md="6" sm="12">
                             <P>
-                                Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-                                <br />
-                                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+                                LANGUAGES/MANAGERS:<br />
+                                - SDKMan<br />
+                                - Python / Pip<br />
+                                - Java (OpenJDK) / Maven<br />
+                                - Golang / dep<br />
+                                - NodeJS / NPM / Yarn<br />
+                                - PHP / Composer<br />
                             </P>
-
+                        </Col>
+                        <Col md="6" sm="12">
                             <P>
-                                1914 translation by H. Rackham
+                                TOOLS:<br />
+                                - curl<br />
+                                - jq<br />
+                                - httpie<br />
+                                - telnet<br />
+                                - htop<br />
+                                - ab<br />
+                                - vim<br />
+                                - nano<br />
+                                - git<br />
+                                - grunt<br />
+                                - gulp<br />
+                                - ant<br />
+                                - loadtest<br />
+                            </P>
+                        </Col>
+                        <Col md="12" sm="12">
+                            <P>
+                                <h2>Why?</h2>
+                                For fun, of course! :)<br />
                                 <br />
-                                "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
+                                Some years ago I was working in IT configuring
+                                web servers and networking. I am not a network
+                                expert, so I used to perform checks on my work
+                                using an external point (my house computer
+                                usually), but sometimes it was not an option
+                                either. "How could I use a temporary point in
+                                the Internet to do some tests?" I though, and
+                                this concept came to my mind. Soon I realized
+                                that it could be a good fit for others
+                                searching for temporal access to a server, like
+                                when you use a mobile device travelling to
+                                work.
+                            </P>
+                            <P>
+                                <h2>Who?</h2>
+                                I am <a href="http://ariel17.com.ar">Ariel Gerardo Ríos</a> and I work as a
+                                Software Engineer. I do stuff in my free time.
                             </P>
                         </Col>
                     </Row>

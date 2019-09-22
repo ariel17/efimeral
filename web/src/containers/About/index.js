@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import C from '../../components/Container';
 import Header from '../../components/Header';
 import { Logo } from '../../components/Logo';
+import { Badge } from '../../components/Badge';
 
 
 const P = styled.p`
@@ -44,6 +45,7 @@ class About extends Component {
         return (
             <C fluid="true">
                 <Header activeKey={process.env.PUBLIC_URL + '/#/about'} />
+                <Badge />
 
                 <section>    
                     <Row>

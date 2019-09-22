@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import Header from '../../components/Header';
 import { Logo, Symbol, Ubuntu, Arch } from '../../components/Logo';
+import { Badge } from '../../components/Badge';
 
 
 const C = styled(Container)`
@@ -59,6 +60,7 @@ class Home extends Component {
         return (
             <C fluid="true">
                 <Header activeKey={process.env.PUBLIC_URL + '/#/'} />
+                <Badge />
 
                 <section>    
                     <Row>

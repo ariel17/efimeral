@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import ReactGA from "react-ga";
 import { Row, Col } from 'react-bootstrap'
 import C from '../../components/Container';
 import Header from '../../components/Header';
@@ -39,6 +40,10 @@ class About extends Component {
 
     closeModal = () => {
         this.setState({show: false});
+    }
+
+    componentDidMount() {
+       ReactGA.pageview(window.location.pathname + window.location.hash + window.location.search); 
     }
 
     render = () => {

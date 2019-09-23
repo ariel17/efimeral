@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import ReactGA from "react-ga";
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap'
 import Header from '../../components/Header';
 import { Logo, Symbol, Ubuntu, Arch } from '../../components/Logo';
@@ -54,6 +55,10 @@ class Home extends Component {
 
     closeModal = () => {
         this.setState({show: false});
+    }
+
+    componentDidMount() {
+       ReactGA.pageview(window.location.pathname + window.location.hash + window.location.search); 
     }
 
     render = () => {

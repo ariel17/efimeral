@@ -18,7 +18,7 @@ image-up: image-build
 	docker run -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock $(IMAGE)
 
 up:
-	ENVIRONMENT=production BASE_URL=http://localhost GIN_MODE=release go run api.go
+	PORT=8080 ENVIRONMENT=production BASE_URL=http://localhost GIN_MODE=release go run api.go
 
 up-development:
 	ENVIRONMENT=development BASE_URL=http://localhost go run api.go

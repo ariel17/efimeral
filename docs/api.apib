@@ -29,6 +29,28 @@ Efimeral is an use-and-drop Linux boxes provider. This is the public API definit
 ## DeletedSession (ActiveSession)
 + deleted_at: `2018-12-08T12:00:00Z` (string, required) - The elimination date of the session.
 
+## AvailableDistributions (object)
++ ubuntu (array, fixed)
+  - `19.04`
+
+# Group Distributions
+
+This group is about distributions being used in the platform.
+
+## Distributions [/distributions]
+
+### Show available distributions and tags [GET]
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Attributes (AvailableDistributions)
+
 # Group Sessions
 
 This group is about resources to manipulate user's sessions. 

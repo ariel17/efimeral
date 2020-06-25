@@ -60,9 +60,10 @@ func RemoveSession(id string) (*Container, *apierrors.APIError) {
 	return container, nil
 }
 
+// PullAvailableImages fetches from Docker registry all configured images.
 func PullAvailableImages() *apierrors.APIError {
 	log.Info("pre-fetching images ...")
-	for distribution, tags := range availableDistributions {
+	for distribution, tags := range config.AvailableDistributions {
 		for _, tag := range tags {
 			log.Infof("> %s:%s", distribution, tag)
 			if err := dc.Pull(distribution, tag); err != nil {

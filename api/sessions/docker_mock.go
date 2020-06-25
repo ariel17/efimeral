@@ -13,11 +13,11 @@ type dockerMock struct {
 	err *apierrors.APIError
 }
 
-func (dc *dockerMock) Pull(distribution Distribution, tag string) *apierrors.APIError {
+func (dc *dockerMock) Pull(distribution config.Distribution, tag string) *apierrors.APIError {
 	return nil
 }
 
-func (dc *dockerMock) Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError) {
+func (dc *dockerMock) Create(distribution config.Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError) {
 	if dc.err != nil {
 		return nil, dc.err
 	}

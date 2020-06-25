@@ -7,28 +7,14 @@ import (
 	"net/http"
 
 	"github.com/ariel17/efimeral/api/apierrors"
+	"github.com/ariel17/efimeral/api/config"
 	"github.com/gin-gonic/gin"
-)
-
-// Distribution refers to Linux distributions.
-type Distribution string
-
-const (
-	ubuntu Distribution = "ubuntu"
-	arch   Distribution = "archlinux"
-)
-
-var (
-	availableDistributions = map[Distribution][]string{
-		ubuntu: []string{"19.04"},
-		arch:   []string{"latest"},
-	}
 )
 
 // OSDistribution responds to the required data needed to create a new session.
 type OSDistribution struct {
-	Distribution Distribution `json:"distribution"`
-	Tag          string       `json:"tag"`
+	Distribution config.Distribution `json:"distribution"`
+	Tag          string              `json:"tag"`
 }
 
 // UnmarshalJSON is a custom implementation for unmarshalling OSDistribution in
@@ -39,7 +25,7 @@ func (od *OSDistribution) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &aux); err != nil {
 		return err
 	}
-	if tags, found := availableDistributions[aux.Distribution]; found {
+	if tags, found := config.AvailableDistributions[aux.Distribution]; found {
 		od.Distribution = aux.Distribution
 		var validTag bool
 		for _, tag := range tags {

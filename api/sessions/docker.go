@@ -14,7 +14,7 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/mercadolibre/go-meli-toolkit/goutils/logger"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -23,12 +23,12 @@ const (
 )
 
 type Container struct {
-	ID           string       `json:"id"`
-	Distribution Distribution `json:"distribution"`
-	Tag          string       `json:"tag"`
-	URL          string       `json:"url"`
-	CreatedAt    time.Time    `json:"created_at"`
-	DeletedAt    *time.Time   `json:"deleted_at,omitempty"`
+	ID           string              `json:"id"`
+	Distribution config.Distribution `json:"distribution"`
+	Tag          string              `json:"tag"`
+	URL          string              `json:"url"`
+	CreatedAt    time.Time           `json:"created_at"`
+	DeletedAt    *time.Time          `json:"deleted_at,omitempty"`
 }
 
 func (c Container) HasExpired(d time.Duration) bool {
@@ -37,8 +37,8 @@ func (c Container) HasExpired(d time.Duration) bool {
 }
 
 type DockerClient interface {
-	Pull(distribution Distribution, tag string) *apierrors.APIError
-	Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError)
+	Pull(distribution config.Distribution, tag string) *apierrors.APIError
+	Create(distribution config.Distribution, tag string, cpus, memory int64, hostIP string, hostPort int) (*Container, *apierrors.APIError)
 	Get(id string) (*Container, *apierrors.APIError)
 	Destroy(id string) *apierrors.APIError
 	List() ([]Container, *apierrors.APIError)
@@ -50,7 +50,7 @@ type dockerClient struct {
 	context context.Context
 }
 
-func (dc *dockerClient) Pull(distribution Distribution, tag string) *apierrors.APIError {
+func (dc *dockerClient) Pull(distribution config.Distribution, tag string) *apierrors.APIError {
 	options := types.ImagePullOptions{}
 	image := createImageName(distribution, tag)
 	if _, err := dc.c.ImagePull(dc.Context(), image, options); err != nil {
@@ -59,7 +59,7 @@ func (dc *dockerClient) Pull(distribution Distribution, tag string) *apierrors.A
 	return nil
 }
 
-func (dc *dockerClient) Create(distribution Distribution, tag string, cpus, memory int64, hostIP string, port int) (*Container, *apierrors.APIError) {
+func (dc *dockerClient) Create(distribution config.Distribution, tag string, cpus, memory int64, hostIP string, port int) (*Container, *apierrors.APIError) {
 	image := createImageName(distribution, tag)
 	config := container.Config{Image: image}
 
@@ -152,22 +152,22 @@ func (dc *dockerClient) Context() context.Context {
 	return dc.context
 }
 
-func createImageName(distribution Distribution, tag string) string {
+func createImageName(distribution config.Distribution, tag string) string {
 	return fmt.Sprintf("%s:%s-%s", hubRepositoryName, distribution, tag)
 }
 
-func parseImageName(image string) (Distribution, string, *apierrors.APIError) {
+func parseImageName(image string) (config.Distribution, string, *apierrors.APIError) {
 	aux := strings.Replace(image, hubRepositoryName, "", 1)
 	aux = strings.Replace(aux, ":", "", 1)
 	parts := strings.Split(aux, "-")
 	if len(parts) != 2 {
-		logger.Errorf("error parsing image name; has invalid parts: %s", nil, image)
+		log.Errorf("error parsing image name; has invalid parts: %s", nil, image)
 		return "", "", apierrors.NewNotFoundError()
 	}
-	distribution := Distribution(parts[0])
-	tags, found := availableDistributions[distribution]
+	distribution := config.Distribution(parts[0])
+	tags, found := config.AvailableDistributions[distribution]
 	if !found {
-		logger.Errorf("error parsing image name; distribution is invalid: %s", nil, image)
+		log.Errorf("error parsing image name; distribution is invalid: %s", nil, image)
 		return "", "", apierrors.NewNotFoundError()
 	}
 	found = false
@@ -177,7 +177,7 @@ func parseImageName(image string) (Distribution, string, *apierrors.APIError) {
 		}
 	}
 	if !found {
-		logger.Errorf("error parsing image name; tag is not valid: %s", nil, image)
+		log.Errorf("error parsing image name; tag is not valid: %s", nil, image)
 		return "", "", apierrors.NewNotFoundError()
 	}
 

@@ -2,7 +2,7 @@
 IMAGE = ariel17/efimeral:api
 
 api-install:
-	dep ensure
+	go mod tidy
 
 api-build: api-install
 	go test ./... && \

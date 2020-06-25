@@ -69,7 +69,7 @@ func TestGetSession(t *testing.T) {
 			if tc.status == http.StatusOK {
 				dm.c = &Container{
 					ID:           id,
-					Distribution: ubuntu,
+					Distribution: "ubuntu",
 					Tag:          "19.04",
 					CreatedAt:    config.Now().UTC(),
 					URL:          "http://localhost:9000",
@@ -143,7 +143,7 @@ func TestDeleteSession(t *testing.T) {
 			if tc.status == http.StatusOK {
 				dm.c = &Container{
 					ID:           id,
-					Distribution: ubuntu,
+					Distribution: "ubuntu",
 					Tag:          "19.04",
 					CreatedAt:    config.Now().UTC(),
 					URL:          "http://localhost:9000",

@@ -161,13 +161,13 @@ func parseImageName(image string) (config.Distribution, string, *apierrors.APIEr
 	aux = strings.Replace(aux, ":", "", 1)
 	parts := strings.Split(aux, "-")
 	if len(parts) != 2 {
-		log.Errorf("error parsing image name; has invalid parts: %s", nil, image)
+		log.Errorf("error parsing image name; has invalid parts: %s", image)
 		return "", "", apierrors.NewNotFoundError()
 	}
 	distribution := config.Distribution(parts[0])
 	tags, found := config.AvailableDistributions[distribution]
 	if !found {
-		log.Errorf("error parsing image name; distribution is invalid: %s", nil, image)
+		log.Errorf("error parsing image name; distribution is invalid: %s", image)
 		return "", "", apierrors.NewNotFoundError()
 	}
 	found = false
@@ -177,7 +177,7 @@ func parseImageName(image string) (config.Distribution, string, *apierrors.APIEr
 		}
 	}
 	if !found {
-		log.Errorf("error parsing image name; tag is not valid: %s", nil, image)
+		log.Errorf("error parsing image name; tag is not valid: %s", image)
 		return "", "", apierrors.NewNotFoundError()
 	}
 

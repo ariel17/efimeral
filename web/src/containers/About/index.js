@@ -4,7 +4,7 @@ import ReactGA from "react-ga";
 import { Row, Col } from 'react-bootstrap'
 import C from '../../components/Container';
 import Header from '../../components/Header';
-import { Logo } from '../../components/Logo';
+import { Logo, Symbol } from '../../components/Logo';
 import { Badge } from '../../components/Badge';
 
 
@@ -55,6 +55,7 @@ class About extends Component {
                 <section>    
                     <Row>
                         <Col md="12" sm="12">
+                            <Symbol />
                             <Logo />
                         </Col>
                     </Row>

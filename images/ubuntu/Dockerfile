@@ -1,8 +1,7 @@
 FROM ubuntu:20.04
 LABEL maintainer="ariel.gerardo.rios@gmail.com"
 
-RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
-RUN ["rm", "-rf", "/etc/apt/sources.list.d/*"]
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "linuxlogo"]

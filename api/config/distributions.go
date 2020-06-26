@@ -12,7 +12,7 @@ var (
 	// AvailableDistributions contains the name and tags of distributions
 	// offered for this platform.
 	AvailableDistributions = map[Distribution][]string{
-		ubuntu: []string{"19.04"},
+		ubuntu: []string{"20.04"},
 		arch:   []string{"latest"},
 	}
 )

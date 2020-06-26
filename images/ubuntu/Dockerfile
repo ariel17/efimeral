@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:20.04
 LABEL maintainer="ariel.gerardo.rios@gmail.com"
 
 RUN ["rm", "-rf", "/var/lib/apt/lists/*"]

@@ -1,11 +1,14 @@
 FROM ubuntu:19.04
 LABEL maintainer="ariel.gerardo.rios@gmail.com"
 
-RUN ["apt", "update"]
-RUN ["apt", "install", "-y", "linuxlogo"]
-RUN ["apt", "install", "-y", "vim", "htop", "curl", "telnet"]
-RUN ["apt", "install", "-y", "shellinabox", "openssl", "ca-certificates"]
-RUN ["apt", "install", "-y", "git", "python3.6", "golang-go", "openjdk-8-jdk", "nodejs", "npm"]
+RUN ["rm", "-rf", "/var/lib/apt/lists/*"]
+RUN ["rm", "-rf", "/etc/apt/sources.list.d/*"]
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "linuxlogo"]
+RUN ["apt-get", "install", "-y", "vim", "htop", "curl", "telnet"]
+RUN ["apt-get", "install", "-y", "shellinabox", "openssl", "ca-certificates"]
+RUN ["apt-get", "install", "-y", "git", "python3.6", "golang-go", "openjdk-8-jdk", "nodejs", "npm"]
 
 ARG USER=efimeral
 ARG PASSWD=efimeral
